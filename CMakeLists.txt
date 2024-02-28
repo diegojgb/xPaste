@@ -38,6 +38,10 @@ qt_add_qml_module(appxPasteQT
     SettingsPage.qml
     AboutPage.qml
 
+    SOURCES
+    WindowThemeSetter.h
+    WindowThemeSetter.cpp
+
     RESOURCES
     assets/light/about.png
     assets/light/settings.png
@@ -77,6 +81,7 @@ set_target_properties(appxPasteQT PROPERTIES
 target_link_libraries(appxPasteQT
     PRIVATE Qt6::Quick
     PRIVATE Qt6::QuickControls2
+    PRIVATE dwmapi
 )
 
 include(GNUInstallDirs)

@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
+import com.obin.ThemeSetter 1.0
 
 ApplicationWindow {
     id: root
@@ -20,8 +21,12 @@ ApplicationWindow {
         AboutView
     }
 
-    property bool darkEnabled: true
+    property bool darkEnabled: ThemeSetter.darkEnabled
     property int activeView: Main.View.SettingsView
+
+    onDarkEnabledChanged: {
+        ThemeSetter.darkEnabled = root.darkEnabled
+    }
 
     palette: root.darkEnabled ? darkTheme : lightTheme
 
@@ -108,6 +113,14 @@ ApplicationWindow {
                         currentIndex: 1
 
                         model: ["Light", "Dark"]
+
+                        onCurrentIndexChanged: {
+                            if (currentIndex === 0) {
+                                ThemeSetter.darkEnabled = false
+                            } else if (currentIndex === 1) {
+                                ThemeSetter.darkEnabled = true
+                            }
+                        }
                     }
                 }
             }

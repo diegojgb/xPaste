@@ -129,12 +129,4 @@ ComboBox {
             radius: 2
         }
     }
-
-    onCurrentIndexChanged: {
-        if (currentIndex === 0) {
-            root.darkEnabled = false // "Light" is selected
-        } else if (currentIndex === 1) {
-            root.darkEnabled = true // "Dark" is selected
-        }
-    }
 }
