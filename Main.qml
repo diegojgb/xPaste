@@ -15,7 +15,13 @@ ApplicationWindow {
     minimumHeight: height
     minimumWidth: width
 
+    enum View {
+        SettingsView,
+        AboutView
+    }
+
     property bool darkEnabled: true
+    property int activeView: Main.View.SettingsView
 
     palette: root.darkEnabled ? darkTheme : lightTheme
 
@@ -75,6 +81,8 @@ ApplicationWindow {
                     dark_image: "assets/dark/settings.png"
                     light_image: "assets/light/settings.png"
                     checked: true
+
+                    onClicked: root.activeView = Main.View.SettingsView
                 }
 
                 Tab {
@@ -84,6 +92,8 @@ ApplicationWindow {
                     darkEnabled: root.darkEnabled
                     dark_image: "assets/dark/about.png"
                     light_image: "assets/light/about.png"
+
+                    onClicked: root.activeView = Main.View.AboutView
                 }
 
                 Item {
@@ -117,6 +127,18 @@ ApplicationWindow {
                 anchors.left: parent.left
                 anchors.topMargin: 27
                 anchors.leftMargin: 24
+
+                visible: root.activeView === Main.View.SettingsView
+            }
+
+            AboutPage {
+                width: parent.width
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.topMargin: 32
+                anchors.leftMargin: 28
+
+                visible: root.activeView === Main.View.AboutView
             }
         }
     }

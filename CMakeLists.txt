@@ -36,6 +36,7 @@ qt_add_qml_module(appxPasteQT
     CustomComboBox.qml
     CustomSpinBox.qml
     SettingsPage.qml
+    AboutPage.qml
 
     RESOURCES
     assets/light/about.png
