@@ -10,11 +10,11 @@ ApplicationWindow {
 
     width: 700
     height: 480
+    maximumHeight: height
+    maximumWidth: width
+    minimumHeight: height
+    minimumWidth: width
 
-    // maximumHeight: height
-    // maximumWidth: width
-    // minimumHeight: height
-    // minimumWidth: width
     property bool darkEnabled: true
 
     palette: root.darkEnabled ? darkTheme : lightTheme
@@ -61,6 +61,7 @@ ApplicationWindow {
 
                             onClicked: {
                                 on_off_switch.checked = !on_off_switch.checked
+                                forceActiveFocus()
                             }
                         }
                     }
@@ -174,6 +175,7 @@ ApplicationWindow {
                         spacing: 6
 
                         CustomCheckbox {
+                            id: paste_hotkey_checkbox
                             text: qsTr("Setup a custom paste hotkey")
                             darkEnabled: root.darkEnabled
                         }
@@ -184,6 +186,7 @@ ApplicationWindow {
                             Layout.topMargin: 1
                             Layout.preferredWidth: 120
                             Layout.preferredHeight: 25
+                            disabled: !paste_hotkey_checkbox.checked
                         }
                     }
 
@@ -191,7 +194,7 @@ ApplicationWindow {
                         spacing: 6
 
                         CustomCheckbox {
-                            id: hotkey_checkbox
+                            id: toggle_hotkey_checkbox
 
                             text: qsTr("Setup a hotkey for toggling the hook")
                             darkEnabled: root.darkEnabled
@@ -203,6 +206,7 @@ ApplicationWindow {
                             Layout.topMargin: 1
                             Layout.preferredWidth: 120
                             Layout.preferredHeight: 25
+                            disabled: !toggle_hotkey_checkbox.checked
                         }
                     }
 
@@ -210,7 +214,7 @@ ApplicationWindow {
                         Layout.leftMargin: 25
                         text: qsTr("Disable on/off notifications.")
                         darkEnabled: root.darkEnabled
-                        disabled: !hotkey_checkbox.checked
+                        disabled: !toggle_hotkey_checkbox.checked
                     }
 
                     RowLayout {
@@ -227,6 +231,8 @@ ApplicationWindow {
                         CustomSpinBox {
                             Layout.preferredWidth: 120
                             darkEnabled: root.darkEnabled
+                            disabled: !time_checkbox.checked
+                            editable: time_checkbox.checked
                         }
                     }
 
@@ -248,6 +254,7 @@ ApplicationWindow {
         button: "#111"
         buttonText: "#fff"
         dark: "#666"
+        highlight: '#0078d4'
         highlightedText: "#fff"
         light: "#000"
         mid: "#444"
@@ -268,6 +275,7 @@ ApplicationWindow {
         button: "#eee"
         buttonText: "#000"
         dark: "#999"
+        highlight: '#0078d4'
         highlightedText: "#fff"
         light: "#fff"
         mid: "#bbb"

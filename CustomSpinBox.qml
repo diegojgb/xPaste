@@ -5,6 +5,9 @@ SpinBox {
     id: control
 
     required property bool darkEnabled
+    property bool disabled
+
+    hoverEnabled: !control.disabled
 
     width: 110
     height: 40
@@ -46,7 +49,7 @@ SpinBox {
                 }
             } else {
                 if (control.hovered || control.activeFocus) {
-                    return '#777'
+                    return '#666'
                 } else {
                     return '#abadb3'
                 }
@@ -59,7 +62,7 @@ SpinBox {
         text: control.textFromValue(control.value, control.locale)
 
         font: control.font
-        color: palette.text
+        color: control.disabled ? palette.disabled.text : palette.text
         selectedTextColor: palette.highlightedText
         selectionColor: palette.highlight
         horizontalAlignment: Qt.AlignHCenter
@@ -68,5 +71,7 @@ SpinBox {
 
         readOnly: !control.editable
         validator: control.validator
+        selectByMouse: !control.disabled
+        activeFocusOnPress: !control.disabled
     }
 }

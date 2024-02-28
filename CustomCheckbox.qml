@@ -81,6 +81,7 @@ Item {
         onClicked: {
             if (!control.disabled)
                 control.checked = !control.checked
+            forceActiveFocus()
         }
     }
 }

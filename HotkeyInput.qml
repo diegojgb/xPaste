@@ -6,7 +6,19 @@ TextField {
     id: control
 
     required property bool darkEnabled
+    property bool disabled: false
     property alias defaultHotkey: control.text
+
+    hoverEnabled: !control.disabled
+    activeFocusOnPress: !control.disabled
+
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Qt.ArrowCursor
+        onPressed: mouse => {
+                       mouse.accepted = false
+                   }
+    }
 
     background: Rectangle {
         color: palette.base
@@ -21,7 +33,7 @@ TextField {
                 }
             } else {
                 if (control.hovered) {
-                    return '#777'
+                    return '#666'
                 } else {
                     return '#abadb3'
                 }
@@ -30,6 +42,9 @@ TextField {
         border.width: control.activeFocus ? 2 : 1
         radius: 2
     }
+
+    selectByMouse: !control.disabled
+    color: control.disabled ? palette.disabled.text : palette.text
 
     text: 'CTRL+V'
     readOnly: true

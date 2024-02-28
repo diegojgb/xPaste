@@ -98,7 +98,7 @@ ComboBox {
                 if (popup.visible || control.pressed) {
                     return '#999'
                 } else {
-                    return '#bbb'
+                    return '#c3c3c3'
                 }
             }
         }
