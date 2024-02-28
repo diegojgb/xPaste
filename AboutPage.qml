@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls
 
 ColumnLayout {
+    spacing: 0
+
     Row {
         spacing: 10
 
@@ -23,5 +25,24 @@ ColumnLayout {
                 font.pointSize: 12
             }
         }
+    }
+
+    LabelSeparator {
+        Layout.topMargin: 24
+        text: 'Author info'
+        darkEnabled: root.darkEnabled
+    }
+
+    Label {
+        Layout.leftMargin: 10
+        Layout.topMargin: 10
+        text: '© 2024 - Obin XYZ'
+        renderType: Text.NativeRendering
+    }
+
+    Label {
+        Layout.leftMargin: 24
+        text: 'Release date: March 2024'
+        renderType: Text.NativeRendering
     }
 }

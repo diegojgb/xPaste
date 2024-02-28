@@ -9,7 +9,7 @@ ApplicationWindow {
     title: qsTr('xPaste')
 
     width: 700
-    height: 480
+    height: 483
     maximumHeight: height
     maximumWidth: width
     minimumHeight: height

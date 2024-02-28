@@ -19,7 +19,7 @@ ColumnLayout {
     }
 
     ColumnLayout {
-        Layout.topMargin: 8
+        Layout.topMargin: 10
         Layout.leftMargin: 20
         spacing: 10
 
@@ -46,13 +46,13 @@ ColumnLayout {
 
     // Clipboard hook settings
     LabelSeparator {
-        Layout.topMargin: 16
+        Layout.topMargin: 18
         text: 'Clipboard hook settings'
         darkEnabled: root.darkEnabled
     }
 
     ColumnLayout {
-        Layout.topMargin: 8
+        Layout.topMargin: 7
         Layout.leftMargin: 20
         spacing: 10
 
