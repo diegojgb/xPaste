@@ -2,7 +2,7 @@
 # - Can't set policy QTP0001 to NEW because it throws an error.
 
 # Optional:
-# - Change title bar color based on the current theme (dark/light)
+# - Find a way to have a fully functional switcher for the title bar color (light/dark), that also responds to the System theme changes when set on "System".
 
 
 cmake_minimum_required(VERSION 3.16)

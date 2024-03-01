@@ -1,7 +1,6 @@
 #ifndef WINDOWTHEMESETTER_H
 #define WINDOWTHEMESETTER_H
 
-#include <QQmlApplicationEngine>
 #include <QObject>
 #include <dwmapi.h>
 
@@ -12,12 +11,10 @@ class WindowThemeSetter : public QObject
     Q_PROPERTY(bool darkEnabled READ darkEnabled WRITE setDarkEnabled NOTIFY darkEnabledChanged FINAL)
 
 public:
-    explicit WindowThemeSetter(QObject *parent, QQmlApplicationEngine *engine = nullptr, BOOL init_dark = true);
+    explicit WindowThemeSetter(QObject *parent, BOOL init_dark = true);
 
     bool darkEnabled() const;
     void setDarkEnabled(bool newDarkEnabled);
-
-    QQmlApplicationEngine *engine;
 
 public slots:
     void changeWindowTheme();

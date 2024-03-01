@@ -1,9 +1,10 @@
 #include "WindowThemeSetter.h"
+#include <QGuiApplication>
 #include <QQuickWindow>
 #include <dwmapi.h>
 
-WindowThemeSetter::WindowThemeSetter(QObject *parent, QQmlApplicationEngine *engine, BOOL init_dark)
-    : QObject{parent}, engine(engine), m_darkEnabled(init_dark)
+WindowThemeSetter::WindowThemeSetter(QObject *parent, BOOL init_dark)
+    : QObject{parent}, m_darkEnabled(init_dark)
 {
     connect(this, &WindowThemeSetter::darkEnabledChanged, this, &WindowThemeSetter::changeWindowTheme);
 }
@@ -25,9 +26,13 @@ void WindowThemeSetter::setDarkEnabled(bool newDarkEnabled)
 void WindowThemeSetter::changeWindowTheme()
 {
     if (windowHandle == 0)
-        if(QWindow* window = qobject_cast<QWindow*>(engine->rootObjects().at(0)))
+        if (QWindow* window = QGuiApplication::allWindows().at(0))
             windowHandle = (HWND)window->winId();
 
-    if (windowHandle != 0)
-        DwmSetWindowAttribute(windowHandle, 20, &m_darkEnabled, sizeof(m_darkEnabled));
+    if (windowHandle != 0) {
+        BOOL success = SUCCEEDED(DwmSetWindowAttribute(windowHandle, 20, &m_darkEnabled, sizeof(m_darkEnabled)));
+
+        if (!success)
+            DwmSetWindowAttribute(windowHandle, 19, &m_darkEnabled, sizeof(m_darkEnabled));
+    }
 }
