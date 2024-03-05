@@ -17,22 +17,17 @@ bool isDark(Qt::ColorScheme colorScheme) {
 
 int main(int argc, char *argv[])
 {
+    qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
     QGuiApplication app(argc, argv);
     QQuickStyle::setStyle("Fusion");
     app.setWindowIcon(QIcon(":/xPasteQT/assets/xpaste_logo.ico"));
 
-    // QStyleHints *styleHints = QGuiApplication::styleHints();
-    // Qt::ColorScheme colorScheme = styleHints->colorScheme();
+    QStyleHints *styleHints = QGuiApplication::styleHints();
+    Qt::ColorScheme colorScheme = styleHints->colorScheme();
 
-    QScopedPointer<WindowThemeSetter> themeSetter(new WindowThemeSetter(&app));
+    QScopedPointer<WindowThemeSetter> themeSetter(new WindowThemeSetter(&app, colorScheme ==  Qt::ColorScheme::Dark));
 
-    // QObject::connect(styleHints, &QStyleHints::colorSchemeChanged, [](Qt::ColorScheme colorScheme) {
-    //     QWindow* window = QGuiApplication::allWindows().at(0);
-    //     HWND windowHandle = (HWND)window->winId();
-    //     BOOL m_darkEnabled = true;
-    //     BOOL success = SUCCEEDED(DwmSetWindowAttribute(windowHandle, 20, &m_darkEnabled, sizeof(m_darkEnabled)));
-    //     qDebug() << success;
-    // });
+    QObject::connect(styleHints, &QStyleHints::colorSchemeChanged, themeSetter.get(), qOverload<>(&WindowThemeSetter::updateWindowTheme));
 
     QQmlApplicationEngine engine;
 

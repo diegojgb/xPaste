@@ -21,6 +21,7 @@ ApplicationWindow {
         AboutView
     }
 
+    property int transitionDuration: 250
     property bool darkEnabled: ThemeSetter.darkEnabled
     property int activeView: Main.View.SettingsView
 
@@ -28,7 +29,18 @@ ApplicationWindow {
         ThemeSetter.darkEnabled = root.darkEnabled
     }
 
+    Component.onCompleted: {
+        if (root.darkEnabled)
+            ThemeSetter.updateWindowTheme()
+    }
+
     palette: root.darkEnabled ? darkTheme : lightTheme
+
+    function currentTheme() {
+        if (root.darkEnabled)
+            return "dark"
+        return "light"
+    }
 
     // Makes widgets lose focus when clicked outside.
     Pane {
@@ -48,6 +60,12 @@ ApplicationWindow {
             Layout.preferredWidth: 176
             color: root.darkEnabled ? '#2b2b2b' : '#dbdbdb'
 
+            Behavior on color {
+                ColorAnimation {
+                    duration: root.transitionDuration
+                }
+            }
+
             ColumnLayout {
                 anchors.fill: parent
                 spacing: 0
@@ -60,6 +78,12 @@ ApplicationWindow {
                     color: root.darkEnabled ? '#333' : '#e4e4e4'
                     Layout.fillWidth: true
                     Layout.preferredHeight: 75
+
+                    Behavior on color {
+                        ColorAnimation {
+                            duration: root.transitionDuration
+                        }
+                    }
 
                     Image {
                         source: on_off_switch.checked ? 'assets/on_switch.png' : 'assets/off_switch.png'
@@ -133,6 +157,12 @@ ApplicationWindow {
             Layout.fillHeight: true
             Layout.fillWidth: true
             color: root.darkEnabled ? '#242424' : '#ebebeb'
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: root.transitionDuration
+                }
+            }
 
             SettingsPage {
                 width: parent.width

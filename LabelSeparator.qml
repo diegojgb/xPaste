@@ -13,6 +13,12 @@ RowLayout {
         id: label
         renderType: Text.NativeRendering
         font.pointSize: 10
+
+        Behavior on color {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
     }
 
     Rectangle {
@@ -21,5 +27,11 @@ RowLayout {
         Layout.fillWidth: true
         Layout.rightMargin: control.rightMargin
         Layout.topMargin: 4
+
+        Behavior on color {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
     }
 }

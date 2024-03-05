@@ -5,15 +5,18 @@ SpinBox {
     id: control
 
     required property bool darkEnabled
-    property bool disabled
 
-    hoverEnabled: !control.disabled
+    hoverEnabled: control.enabled
 
     width: 110
     height: 40
     editable: true
     from: 0
     to: 86399 // 23:59:59 in seconds
+
+    onDarkEnabledChanged: {
+        background.state = control.darkEnabled ? "darkState" : "lightState"
+    }
 
     // Format the displayed text as HH:MM:SS
     textFromValue: function (value) {
@@ -38,8 +41,12 @@ SpinBox {
     }
 
     background: Rectangle {
+        id: background
+
         implicitWidth: parent.width
         color: palette.base
+        radius: 2
+
         border.color: {
             if (control.darkEnabled) {
                 if (control.hovered || control.activeFocus) {
@@ -55,14 +62,52 @@ SpinBox {
                 }
             }
         }
-        radius: 2
+
+        states: [
+            State {
+                name: "darkState"
+
+                PropertyChanges {
+                    target: background
+                    border.color: if (control.hovered || control.activeFocus) {
+                                      return '#bbb'
+                                  } else {
+                                      return '#555'
+                                  }
+                }
+            },
+            State {
+                name: "lightState"
+
+                PropertyChanges {
+                    target: background
+                    border.color: if (control.hovered || control.activeFocus) {
+                                      return '#666'
+                                  } else {
+                                      return '#abadb3'
+                                  }
+                }
+            }
+        ]
+
+        transitions: Transition {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
+
+        Behavior on color {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
     }
 
     contentItem: TextInput {
         text: control.textFromValue(control.value, control.locale)
 
         font: control.font
-        color: control.disabled ? palette.disabled.text : palette.text
+        color: !control.enabled ? palette.disabled.text : palette.text
         selectedTextColor: palette.highlightedText
         selectionColor: palette.highlight
         horizontalAlignment: Qt.AlignHCenter
@@ -71,7 +116,13 @@ SpinBox {
 
         readOnly: !control.editable
         validator: control.validator
-        selectByMouse: !control.disabled
-        activeFocusOnPress: !control.disabled
+        selectByMouse: control.enabled
+        activeFocusOnPress: control.enabled
+
+        Behavior on color {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
     }
 }

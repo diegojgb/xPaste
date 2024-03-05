@@ -2,7 +2,9 @@
 # - Can't set policy QTP0001 to NEW because it throws an error.
 
 # Optional:
-# - Find a way to have a fully functional switcher for the title bar color (light/dark), that also responds to the System theme changes when set on "System".
+# - Add "System" option to theme.
+# - Change app name to xPasteQt or maybe even xPaste.
+# - Remake the up/down indicators of the SpinBox to be able to transition their color when changing themes.
 
 
 cmake_minimum_required(VERSION 3.16)

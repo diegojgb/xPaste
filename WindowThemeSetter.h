@@ -4,27 +4,29 @@
 #include <QObject>
 #include <dwmapi.h>
 
-class WindowThemeSetter : public QObject
+
+class WindowThemeSetter: public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool darkEnabled READ darkEnabled WRITE setDarkEnabled NOTIFY darkEnabledChanged FINAL)
+    Q_PROPERTY(BOOL darkEnabled READ darkEnabled WRITE setDarkEnabled NOTIFY darkEnabledChanged FINAL)
 
 public:
-    explicit WindowThemeSetter(QObject *parent, BOOL init_dark = true);
+    explicit WindowThemeSetter(QObject *parent, BOOL darkEnabled);
 
-    bool darkEnabled() const;
-    void setDarkEnabled(bool newDarkEnabled);
+    BOOL darkEnabled() const;
+    void setDarkEnabled(BOOL newDarkEnabled);
 
 public slots:
-    void changeWindowTheme();
+    void updateWindowTheme();
 
 signals:
     void darkEnabledChanged();
 
 private:
     BOOL m_darkEnabled;
-    HWND windowHandle = 0;
+    HWND m_windowHandle = 0;
+    std::map<BOOL, COLORREF> m_themeToColor;
 };
 
 #endif // WINDOWTHEMESETTER_H

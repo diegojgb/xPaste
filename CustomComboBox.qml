@@ -8,6 +8,21 @@ ComboBox {
 
     required property bool darkEnabled
 
+    property var comboBoxNormalColor: ({
+                                           "dark": "#3a3a3a",
+                                           "light": "#c3c3c3"
+                                       })
+
+    property var comboBoxPressedColor: ({
+                                            "dark": '#666',
+                                            "light": '#999'
+                                        })
+
+    onDarkEnabledChanged: {
+        background.state = control.darkEnabled ? "darkState" : "lightState"
+        canvasItem.state = control.darkEnabled ? "fadeInDarkCanvas" : "fadeInLightCanvas"
+    }
+
     delegate: ItemDelegate {
         id: itemDelegate
 
@@ -41,34 +56,98 @@ ComboBox {
         }
     }
 
-    indicator: Canvas {
-        id: canvas
-        x: control.width - width - control.rightPadding - 2
-        y: control.topPadding + (control.availableHeight - height) / 2 + 1
-        width: 8
-        height: 4
-        contextType: "2d"
+    indicator: Item {
+        id: canvasItem
 
-        Connections {
-            target: control
-            function onPressedChanged() {
-                canvas.requestPaint()
+        anchors.right: control.right
+        anchors.rightMargin: 18
+        anchors.verticalCenter: control.verticalCenter
+
+        property color darkIndicatorColor: "#c7c7c7"
+        property color lightIndicatorColor: "#606060"
+
+        Canvas {
+            id: darkCanvas
+
+            width: 8
+            height: 4
+            contextType: "2d"
+            anchors.verticalCenter: parent.verticalCenter
+
+            onPaint: {
+                context.reset()
+                context.moveTo(0, 0)
+                context.lineTo(width, 0)
+                context.lineTo(width / 2, height)
+                context.closePath()
+                context.fillStyle = parent.darkIndicatorColor
+                context.fill()
             }
         }
 
-        onPaint: {
-            context.reset()
-            context.moveTo(0, 0)
-            context.lineTo(width, 0)
-            context.lineTo(width / 2, height)
-            context.closePath()
-            context.fillStyle = control.darkEnabled ? "#c7c7c7" : "#606060"
-            context.fill()
+        Canvas {
+            id: lightCanvas
+
+            width: 8
+            height: 4
+            contextType: "2d"
+            anchors.verticalCenter: parent.verticalCenter
+
+            onPaint: {
+                context.reset()
+                context.moveTo(0, 0)
+                context.lineTo(width, 0)
+                context.lineTo(width / 2, height)
+                context.closePath()
+                context.fillStyle = parent.lightIndicatorColor
+                context.fill()
+            }
         }
+
+        states: [
+            State {
+                name: "fadeInLightCanvas"
+
+                PropertyChanges {
+                    target: darkCanvas
+                    opacity: 0
+                }
+                PropertyChanges {
+                    target: lightCanvas
+                    opacity: 1
+                }
+            },
+            State {
+                name: "fadeInDarkCanvas"
+
+                PropertyChanges {
+                    target: darkCanvas
+                    opacity: 1
+                }
+                PropertyChanges {
+                    target: lightCanvas
+                    opacity: 0
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                NumberAnimation {
+                    property: "opacity"
+                    easing.type: Easing.Linear
+                    duration: root.transitionDuration
+                }
+            }
+        ]
     }
 
     onActivated: {
-        canvas.requestPaint()
+        if (control.darkEnabled) {
+            darkCanvas.requestPaint()
+        } else {
+            lightCanvas.requestPaint()
+        }
     }
 
     contentItem: Text {
@@ -82,30 +161,58 @@ ComboBox {
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
         renderType: Text.NativeRendering
+
+        Behavior on color {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
     }
 
     background: Rectangle {
+        id: background
+
         implicitWidth: 128
         implicitHeight: 27
-        color: {
-            if (control.darkEnabled) {
-                if (popup.visible || control.pressed) {
-                    return '#666'
-                } else {
-                    return '#3a3a3a'
-                }
-            } else {
-                if (popup.visible || control.pressed) {
-                    return '#999'
-                } else {
-                    return '#c3c3c3'
-                }
-            }
-        }
         border.color: control.darkEnabled ? "#555" : "#aaa"
         border.width: 1
         radius: 2
+
+        color: control.darkEnabled ? '#3a3a3a' : '#c3c3c3'
+
+        states: [
+            State {
+                name: "darkState"
+
+                PropertyChanges {
+                    target: background
+                    color: "#3a3a3a"
+                }
+            },
+            State {
+                name: "lightState"
+
+                PropertyChanges {
+                    target: background
+                    color: "#c3c3c3"
+                }
+            }
+        ]
+
+        transitions: Transition {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
+
+        Behavior on border.color {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
     }
+
+    onPressedChanged: background.color = pressed ? control.comboBoxPressedColor[root.currentTheme()] : control.comboBoxNormalColor[root.currentTheme()]
 
     popup: Popup {
         id: popup
@@ -128,5 +235,7 @@ ComboBox {
             border.color: control.darkEnabled ? "#555" : '#aaa'
             radius: 2
         }
+
+        onVisibleChanged: background.color = visible ? control.comboBoxPressedColor[root.currentTheme()] : control.comboBoxNormalColor[root.currentTheme()]
     }
 }

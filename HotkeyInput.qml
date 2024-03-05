@@ -20,27 +20,59 @@ TextField {
                    }
     }
 
+    onDarkEnabledChanged: {
+        background.state = control.darkEnabled ? "darkState" : "lightState"
+    }
+
     background: Rectangle {
+        id: background
+
         color: palette.base
-        border.color: {
-            if (control.activeFocus)
-                return '#7eb4ea'
-            if (control.darkEnabled) {
-                if (control.hovered) {
-                    return '#bbb'
-                } else {
-                    return '#555'
-                }
-            } else {
-                if (control.hovered) {
-                    return '#666'
-                } else {
-                    return '#abadb3'
-                }
-            }
-        }
         border.width: control.activeFocus ? 2 : 1
         radius: 2
+
+        states: [
+            State {
+                name: "darkState"
+
+                PropertyChanges {
+                    target: background
+                    border.color: if (control.activeFocus) {
+                                      return '#7eb4ea'
+                                  } else if (control.hovered) {
+                                      return '#bbb'
+                                  } else {
+                                      return '#555'
+                                  }
+                }
+            },
+            State {
+                name: "lightState"
+
+                PropertyChanges {
+                    target: background
+                    border.color: if (control.activeFocus) {
+                                      return '#7eb4ea'
+                                  } else if (control.hovered) {
+                                      return '#666'
+                                  } else {
+                                      return '#abadb3'
+                                  }
+                }
+            }
+        ]
+
+        transitions: Transition {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
+
+        Behavior on color {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
     }
 
     selectByMouse: !control.disabled
@@ -53,4 +85,10 @@ TextField {
     topPadding: 0
     bottomPadding: 1
     renderType: Text.NativeRendering
+
+    Behavior on color {
+        ColorAnimation {
+            duration: root.transitionDuration
+        }
+    }
 }

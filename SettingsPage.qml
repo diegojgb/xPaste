@@ -9,6 +9,12 @@ ColumnLayout {
         text: 'General settings'
         font.pointSize: 17
         renderType: Text.NativeRendering
+
+        Behavior on color {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
+        }
     }
 
     // App settings
@@ -116,7 +122,7 @@ ColumnLayout {
             CustomSpinBox {
                 Layout.preferredWidth: 120
                 darkEnabled: root.darkEnabled
-                disabled: !time_checkbox.checked
+                enabled: time_checkbox.checked
                 editable: time_checkbox.checked
             }
         }

@@ -15,23 +15,56 @@ TabButton {
     width: parent.width
     font.pointSize: 10
 
+    onDarkEnabledChanged: {
+        background.state = control.darkEnabled ? "darkState" : "lightState"
+        imageItem.state = control.darkEnabled ? "fadeInDarkImage" : "fadeInLightImage"
+    }
+
     background: Rectangle {
+        id: background
         anchors.fill: parent
-        color: {
-            if (control.darkEnabled) {
-                if (control.hovered) {
-                    return "#4d4d4d"
-                } else if (control.checked) {
-                    return "#404040"
+
+        color: control.checked ? control.darkEnabled ? '#404040' : '#bfbfbf' : "transparent"
+
+        states: [
+            State {
+                name: "darkState"
+
+                PropertyChanges {
+                    target: background
+                    color: {
+                        if (control.hovered) {
+                            return "#4d4d4d"
+                        } else if (control.checked) {
+                            return "#404040"
+                        } else {
+                            return "transparent"
+                        }
+                    }
                 }
-            } else {
-                if (control.hovered) {
-                    return "#b3b3b3"
-                } else if (control.checked) {
-                    return "#bfbfbf"
+            },
+            State {
+                name: "lightState"
+
+                PropertyChanges {
+                    target: background
+                    color: {
+                        if (control.hovered) {
+                            return "#b3b3b3"
+                        } else if (control.checked) {
+                            return "#bfbfbf"
+                        } else {
+                            return "transparent"
+                        }
+                    }
                 }
             }
-            return "transparent"
+        ]
+
+        transitions: Transition {
+            ColorAnimation {
+                duration: root.transitionDuration
+            }
         }
     }
 
@@ -42,11 +75,57 @@ TabButton {
         anchors.fill: parent
         anchors.leftMargin: 15
 
-        Image {
-            id: image
+        Item {
+            id: imageItem
 
-            source: control.darkEnabled ? control.dark_image : control.light_image
             Layout.topMargin: 2
+            width: childrenRect.width
+            height: childrenRect.height
+
+            Image {
+                id: darkImage
+                source: control.dark_image
+            }
+
+            Image {
+                id: lightImage
+                source: control.light_image
+            }
+
+            states: [
+                State {
+                    name: "fadeInLightImage"
+                    PropertyChanges {
+                        target: darkImage
+                        opacity: 0
+                    }
+                    PropertyChanges {
+                        target: lightImage
+                        opacity: 1
+                    }
+                },
+                State {
+                    name: "fadeInDarkImage"
+                    PropertyChanges {
+                        target: darkImage
+                        opacity: 1
+                    }
+                    PropertyChanges {
+                        target: lightImage
+                        opacity: 0
+                    }
+                }
+            ]
+
+            transitions: [
+                Transition {
+                    NumberAnimation {
+                        property: "opacity"
+                        easing.type: Easing.Linear
+                        duration: root.transitionDuration
+                    }
+                }
+            ]
         }
 
         Text {
@@ -57,6 +136,12 @@ TabButton {
             font: control.font
             color: palette.text
             renderType: Text.NativeRendering
+
+            Behavior on color {
+                ColorAnimation {
+                    duration: root.transitionDuration
+                }
+            }
         }
     }
 
