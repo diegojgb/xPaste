@@ -26,7 +26,7 @@ signals:
 private:
     BOOL m_darkEnabled;
     HWND m_windowHandle = 0;
-    std::map<BOOL, COLORREF> m_themeToColor;
+    // std::map<BOOL, COLORREF> m_themeToColor;
 };
 
 #endif // WINDOWTHEMESETTER_H

@@ -73,7 +73,7 @@ ColumnLayout {
 
             HotkeyInput {
                 darkEnabled: root.darkEnabled
-                defaultHotkey: 'CTRL+V'
+                text: Manager.settings.hotkeyStr
                 Layout.topMargin: 1
                 Layout.preferredWidth: 120
                 Layout.preferredHeight: 25
@@ -93,7 +93,7 @@ ColumnLayout {
 
             HotkeyInput {
                 darkEnabled: root.darkEnabled
-                defaultHotkey: 'CTRL+V'
+                text: 'CTRL+V'
                 Layout.topMargin: 1
                 Layout.preferredWidth: 120
                 Layout.preferredHeight: 25

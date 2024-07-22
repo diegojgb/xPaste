@@ -7,10 +7,23 @@ TextField {
 
     required property bool darkEnabled
     property bool disabled: false
-    property alias defaultHotkey: control.text
 
     hoverEnabled: !control.disabled
     activeFocusOnPress: !control.disabled
+    selectByMouse: !control.disabled
+    color: control.disabled ? palette.disabled.text : palette.text
+    text: "<not set>"
+    readOnly: true
+    font.pointSize: 9
+    horizontalAlignment: TextInput.AlignHCenter
+    topPadding: 0
+    bottomPadding: 1
+    renderType: Text.NativeRendering
+
+    Keys.onPressed: event => {
+                        Manager.settings.setHotkey(event.key, event.modifiers,
+                                                   event.nativeScanCode)
+                    }
 
     MouseArea {
         anchors.fill: parent
@@ -74,17 +87,6 @@ TextField {
             }
         }
     }
-
-    selectByMouse: !control.disabled
-    color: control.disabled ? palette.disabled.text : palette.text
-
-    text: 'CTRL+V'
-    readOnly: true
-    font.pointSize: 9
-    horizontalAlignment: TextInput.AlignHCenter
-    topPadding: 0
-    bottomPadding: 1
-    renderType: Text.NativeRendering
 
     Behavior on color {
         ColorAnimation {

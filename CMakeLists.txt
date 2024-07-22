@@ -9,13 +9,12 @@
 
 cmake_minimum_required(VERSION 3.16)
 
-project(xPasteQT VERSION 0.1 LANGUAGES CXX)
+project(xPasteQT LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Qt6 6.4 REQUIRED COMPONENTS Quick)
-find_package(Qt6 REQUIRED COMPONENTS QuickControls2)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Widgets QuickControls2)
 
 qt_standard_project_setup()
 
@@ -30,60 +29,60 @@ qt_add_qml_module(appxPasteQT
     VERSION 1.0
 
     QML_FILES
-    Tab.qml
-    Main.qml
-    LabelSeparator.qml
-    CustomCheckbox.qml
-    HotkeyInput.qml
-    CustomComboBox.qml
-    CustomSpinBox.qml
-    SettingsPage.qml
-    AboutPage.qml
+        Tab.qml
+        Main.qml
+        LabelSeparator.qml
+        CustomCheckbox.qml
+        HotkeyInput.qml
+        CustomComboBox.qml
+        CustomSpinBox.qml
+        SettingsPage.qml
+        AboutPage.qml
 
     SOURCES
-    WindowThemeSetter.h
-    WindowThemeSetter.cpp
+        WindowThemeSetter.h WindowThemeSetter.cpp
+        Settings.h Settings.cpp
+        Hotkey.h Hotkey.cpp
+        Manager.h Manager.cpp
 
     RESOURCES
-    assets/light/about.png
-    assets/light/settings.png
-    assets/light/box-basic.png
-    assets/light/box-hover.png
-    assets/light/check-accent.png
-    assets/light/check-hover.png
-    assets/light/box-disabled.png
-    assets/light/check-disabled.png
+        assets/light/about.png
+        assets/light/settings.png
+        assets/light/box-basic.png
+        assets/light/box-hover.png
+        assets/light/check-accent.png
+        assets/light/check-hover.png
+        assets/light/box-disabled.png
+        assets/light/check-disabled.png
 
-    assets/dark/about.png
-    assets/dark/settings.png
-    assets/dark/box-basic.png
-    assets/dark/box-hover.png
-    assets/dark/check-accent.png
-    assets/dark/check-hover.png
-    assets/dark/box-disabled.png
-    assets/dark/check-disabled.png
+        assets/dark/about.png
+        assets/dark/settings.png
+        assets/dark/box-basic.png
+        assets/dark/box-hover.png
+        assets/dark/check-accent.png
+        assets/dark/check-hover.png
+        assets/dark/box-disabled.png
+        assets/dark/check-disabled.png
 
-    assets/off_switch.png
-    assets/on_switch.png
-    assets/xpaste_logo.png
-    assets/xpaste_logo.ico
+        assets/off_switch.png
+        assets/on_switch.png
+        assets/xpaste_logo.png
+        assets/xpaste_logo.ico
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
 set_target_properties(appxPasteQT PROPERTIES
-#    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appxPasteQT
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
+    OUTPUT_NAME "xPaste"
 )
 
-target_link_libraries(appxPasteQT
-    PRIVATE Qt6::Quick
-    PRIVATE Qt6::QuickControls2
-    PRIVATE dwmapi
+target_link_libraries(appxPasteQT PRIVATE
+    Qt6::Quick
+    Qt6::QuickControls2
+    Qt6::Widgets
+    dwmapi
 )
 
 include(GNUInstallDirs)
@@ -92,6 +91,3 @@ install(TARGETS appxPasteQT
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-
-
-

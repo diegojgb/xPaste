@@ -1,12 +1,15 @@
+#include "Manager.h"
 #include "WindowThemeSetter.h"
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QIcon>
 #include <QQmlApplicationEngine>
 #include <QQuickStyle>
-#include <dwmapi.h>
 #include <QStyleHints>
 #include <QQuickWindow>
+#include <QQmlContext>
+
+#include <dwmapi.h>
 
 bool isDark(Qt::ColorScheme colorScheme) {
     if (colorScheme == Qt::ColorScheme::Light) {
@@ -18,9 +21,9 @@ bool isDark(Qt::ColorScheme colorScheme) {
 int main(int argc, char *argv[])
 {
     qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     QQuickStyle::setStyle("Fusion");
-    app.setWindowIcon(QIcon(":/xPasteQT/assets/xpaste_logo.ico"));
+    // app.setWindowIcon(QIcon(":/xPasteQT/assets/xpaste_logo.ico"));
 
     QStyleHints *styleHints = QGuiApplication::styleHints();
     Qt::ColorScheme colorScheme = styleHints->colorScheme();
@@ -32,6 +35,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     qmlRegisterSingletonInstance("com.obin.ThemeSetter", 1, 0, "ThemeSetter", themeSetter.get());
+    engine.rootContext()->setContextProperty("Manager", new Manager());
 
     const QUrl url(u"qrc:/xPasteQT/Main.qml"_qs);
     QObject::connect(

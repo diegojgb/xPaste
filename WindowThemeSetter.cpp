@@ -1,6 +1,8 @@
 #include "WindowThemeSetter.h"
+
 #include <QGuiApplication>
 #include <QQuickWindow>
+
 #include <dwmapi.h>
 
 
@@ -9,8 +11,8 @@ WindowThemeSetter::WindowThemeSetter(QObject *parent, BOOL darkEnabled)
 {
     connect(this, &WindowThemeSetter::darkEnabledChanged, this, &WindowThemeSetter::updateWindowTheme);
 
-    m_themeToColor[true] = 0x00202020;
-    m_themeToColor[false] = 0x00F3F3F3;
+    // m_themeToColor[true] = 0x00202020;
+    // m_themeToColor[false] = 0x00F3F3F3;
 }
 
 void WindowThemeSetter::updateWindowTheme()
