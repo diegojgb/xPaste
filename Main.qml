@@ -73,11 +73,15 @@ ApplicationWindow {
                 Rectangle {
                     id: on_off_switch
 
-                    property bool checked: false
+                    property bool checked: Manager.active
 
                     color: root.darkEnabled ? '#333' : '#e4e4e4'
                     Layout.fillWidth: true
                     Layout.preferredHeight: 75
+
+                    onCheckedChanged: {
+                        Manager.active = checked
+                    }
 
                     Behavior on color {
                         ColorAnimation {

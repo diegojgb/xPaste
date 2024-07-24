@@ -1,5 +1,7 @@
+#include "HotkeyEventFilter.h"
 #include "Manager.h"
 #include "WindowThemeSetter.h"
+#include "Paster.h"
 
 #include <QApplication>
 #include <QIcon>
@@ -45,6 +47,12 @@ int main(int argc, char *argv[])
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
     engine.load(url);
+
+    // Add a filter/listener for global hotkey events.
+    auto* eventFilter = new HotkeyEventFilter();
+    app.installNativeEventFilter(eventFilter);
+
+    QObject::connect(eventFilter, &HotkeyEventFilter::pasteHotkeyActivated, Paster::pasteClipboard);
 
     return app.exec();
 }

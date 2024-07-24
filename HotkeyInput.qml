@@ -21,8 +21,8 @@ TextField {
     renderType: Text.NativeRendering
 
     Keys.onPressed: event => {
-                        Manager.settings.setHotkey(event.key, event.modifiers,
-                                                   event.nativeScanCode)
+                        Manager.settings.pasteHotkey.setHotkey(
+                            event.key, event.modifiers, event.nativeScanCode)
                     }
 
     MouseArea {

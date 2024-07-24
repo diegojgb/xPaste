@@ -1,30 +1,109 @@
 #include "Hotkey.h"
 
 
-Hotkey::Hotkey(QObject *parent)
-    : QObject{parent}
+Hotkey::Hotkey(QObject *parent, int ID,  quint32 defKey, quint32 defMods)
+    : QObject{parent}, ID{ID}, m_defKey{defKey}, m_defMods{defMods}
 {}
 
-void Hotkey::setHotkey(const int key, const int modifiers, quint32 nativeScanCode)
+bool Hotkey::setHotkey(const int key, const int modifiers, quint32 nativeScanCode)
 {
     if (isKeyUnknown(key))
-        return;
+        return false;
 
     m_qKey = key;
     m_qModifiers = modifiers;
     m_nativeScanCode = nativeScanCode;
 
+    if (m_isRegistered) {
+        unregisterHotkey();
+        registerHotkey();
+    }
+
     m_isEmpty = false;
 
     emit hotkeyChanged();
+
+    return true;
 }
 
-QString Hotkey::getHotkeyStr() const
+QString Hotkey::toString() const
 {
     if (m_isEmpty)
         return "<not set>";
 
     return keyToString(m_qKey, m_qModifiers);
+}
+
+bool Hotkey::registerHotkey()
+{
+    if (m_isRegistered)
+        return false;
+
+    if (m_isEmpty)
+        return registerDefault();
+
+    BOOL success = RegisterHotKey(NULL,
+                                  ID,
+                                  getWinModifiers() + MOD_NOREPEAT,
+                                  getWinVk());
+
+    if (!success) {
+        Utils::showCritical("Failed to register hotkey.");
+        return false;
+    }
+
+    m_isRegistered = true;
+
+    return true;
+}
+
+bool Hotkey::unregisterHotkey()
+{
+    if (!m_isRegistered)
+        return false;
+
+    BOOL success = UnregisterHotKey(NULL, ID);
+
+    if (!success) {
+        Utils::showCritical("Failed to unregister hotkey.");
+        return false;
+    }
+
+    m_isRegistered = false;
+
+    return true;
+}
+
+bool Hotkey::registerDefault()
+{
+    if (m_isRegistered)
+        return false;
+
+    BOOL success = RegisterHotKey(NULL, ID, m_defMods, m_defKey);
+
+    if (!success) {
+        Utils::showCritical("Failed to register hotkey.");
+        return false;
+    }
+
+    m_isRegistered = true;
+
+    return true;
+}
+
+quint32 Hotkey::getWinModifiers() const
+{
+    return toNativeModifiers(m_qModifiers);
+}
+
+quint32 Hotkey::getWinVk() const
+{
+    return scanCodeToVk(m_nativeScanCode);
+}
+
+quint32 Hotkey::scanCodeToVk(quint32 nativeScanCode)
+{
+    return MapVirtualKeyA(nativeScanCode, MAPVK_VSC_TO_VK);
 }
 
 bool Hotkey::isKeyUnknown(const int key)
@@ -70,4 +149,14 @@ quint32 Hotkey::toNativeModifiers(const int modifiers)
         mods |= MOD_WIN;
 
     return mods;
+}
+
+QString Hotkey::string() const
+{
+    return toString();
+}
+
+bool Hotkey::isEmpty() const
+{
+    return m_isEmpty;
 }

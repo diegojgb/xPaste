@@ -73,7 +73,7 @@ ColumnLayout {
 
             HotkeyInput {
                 darkEnabled: root.darkEnabled
-                text: Manager.settings.hotkeyStr
+                text: Manager.settings.pasteHotkey.string
                 Layout.topMargin: 1
                 Layout.preferredWidth: 120
                 Layout.preferredHeight: 25

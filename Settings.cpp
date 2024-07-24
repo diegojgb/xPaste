@@ -2,17 +2,10 @@
 
 
 Settings::Settings(QObject *parent)
-    : QObject{parent}
-{
-    connect(&m_hotkey, &Hotkey::hotkeyChanged, this, &Settings::hotkeyStrChanged);
-}
+    : QObject{parent}, m_pasteHotkey{this, Hotkey::PasteHotkeyID}
+{}
 
-void Settings::setHotkey(const int key, const int modifiers, quint32 nativeScanCode)
+Hotkey* Settings::pasteHotkey()
 {
-    m_hotkey.setHotkey(key, modifiers, nativeScanCode);
-}
-
-QString Settings::hotkeyStr() const
-{
-    return m_hotkey.getHotkeyStr();
+    return &m_pasteHotkey;
 }

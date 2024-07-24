@@ -12,20 +12,15 @@ class Settings : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString hotkeyStr READ hotkeyStr NOTIFY hotkeyStrChanged FINAL)
+    Q_PROPERTY(Hotkey* pasteHotkey READ pasteHotkey CONSTANT FINAL)
 
 public:
     explicit Settings(QObject *parent = nullptr);
 
-    QString hotkeyStr() const;
-
-    Q_INVOKABLE void setHotkey(const int key, const int modifiers, quint32 nativeScanCode);
-
-signals:
-    void hotkeyStrChanged();
+    Hotkey* pasteHotkey();
 
 private:
-    Hotkey m_hotkey;
+    Hotkey m_pasteHotkey;
 };
 
 #endif // SETTINGS_H

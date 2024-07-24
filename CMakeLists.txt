@@ -44,6 +44,9 @@ qt_add_qml_module(appxPasteQT
         Settings.h Settings.cpp
         Hotkey.h Hotkey.cpp
         Manager.h Manager.cpp
+        HotkeyEventFilter.h
+        Paster.h Paster.cpp
+        Utils.h Utils.cpp
 
     RESOURCES
         assets/light/about.png
