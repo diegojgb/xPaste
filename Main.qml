@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import com.obin.ThemeSetter 1.0
 
 ApplicationWindow {
     id: root
@@ -73,14 +72,14 @@ ApplicationWindow {
                 Rectangle {
                     id: on_off_switch
 
-                    property bool checked: Manager.active
+                    property bool checked: Settings.pasteActive
 
                     color: root.darkEnabled ? '#333' : '#e4e4e4'
                     Layout.fillWidth: true
                     Layout.preferredHeight: 75
 
                     onCheckedChanged: {
-                        Manager.active = checked
+                        Settings.pasteActive = checked
                     }
 
                     Behavior on color {

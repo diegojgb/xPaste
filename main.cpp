@@ -1,5 +1,5 @@
 #include "HotkeyEventFilter.h"
-#include "Manager.h"
+#include "Settings.h"
 #include "WindowThemeSetter.h"
 #include "Paster.h"
 
@@ -29,15 +29,16 @@ int main(int argc, char *argv[])
 
     QStyleHints *styleHints = QGuiApplication::styleHints();
     Qt::ColorScheme colorScheme = styleHints->colorScheme();
+    auto *themeSetter = new WindowThemeSetter(&app, colorScheme == Qt::ColorScheme::Dark);
 
-    QScopedPointer<WindowThemeSetter> themeSetter(new WindowThemeSetter(&app, colorScheme ==  Qt::ColorScheme::Dark));
-
-    QObject::connect(styleHints, &QStyleHints::colorSchemeChanged, themeSetter.get(), qOverload<>(&WindowThemeSetter::updateWindowTheme));
+    QObject::connect(styleHints, &QStyleHints::colorSchemeChanged, themeSetter, qOverload<>(&WindowThemeSetter::updateWindowTheme));
 
     QQmlApplicationEngine engine;
 
-    qmlRegisterSingletonInstance("com.obin.ThemeSetter", 1, 0, "ThemeSetter", themeSetter.get());
-    engine.rootContext()->setContextProperty("Manager", new Manager());
+    auto *settings = new Settings(&app);
+
+    engine.rootContext()->setContextProperty("Settings", settings);
+    engine.rootContext()->setContextProperty("ThemeSetter", themeSetter);
 
     const QUrl url(u"qrc:/xPasteQT/Main.qml"_qs);
     QObject::connect(
@@ -53,6 +54,7 @@ int main(int argc, char *argv[])
     app.installNativeEventFilter(eventFilter);
 
     QObject::connect(eventFilter, &HotkeyEventFilter::pasteHotkeyActivated, Paster::pasteClipboard);
+    QObject::connect(eventFilter, &HotkeyEventFilter::toggleHotkeyActivated, settings, &Settings::togglePasteActive);
 
     return app.exec();
 }

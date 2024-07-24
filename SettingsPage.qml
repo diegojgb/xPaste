@@ -67,17 +67,27 @@ ColumnLayout {
 
             CustomCheckbox {
                 id: paste_hotkey_checkbox
-                text: qsTr("Setup a custom paste hotkey")
+                text: "Setup a custom paste hotkey"
                 darkEnabled: root.darkEnabled
+                checked: Settings.customHotkeyEnabled
+
+                onCheckedChanged: Settings.customHotkeyEnabled = checked
             }
 
             HotkeyInput {
                 darkEnabled: root.darkEnabled
-                text: Manager.settings.pasteHotkey.string
+                text: Settings.pasteHotkey.string
                 Layout.topMargin: 1
                 Layout.preferredWidth: 120
                 Layout.preferredHeight: 25
                 disabled: !paste_hotkey_checkbox.checked
+
+                Keys.onPressed: event => {
+                                    Settings.pasteHotkey.setHotkey(
+                                        event.key, event.modifiers,
+                                        event.nativeScanCode,
+                                        Settings.pasteActive)
+                                }
             }
         }
 
@@ -86,18 +96,26 @@ ColumnLayout {
 
             CustomCheckbox {
                 id: toggle_hotkey_checkbox
-
-                text: qsTr("Setup a hotkey for toggling the hook")
+                text: "Setup a hotkey for toggling the hook"
                 darkEnabled: root.darkEnabled
+                checked: Settings.toggleActive
+
+                onCheckedChanged: Settings.toggleActive = checked
             }
 
             HotkeyInput {
                 darkEnabled: root.darkEnabled
-                text: 'CTRL+V'
+                text: Settings.toggleHotkey.string
                 Layout.topMargin: 1
                 Layout.preferredWidth: 120
                 Layout.preferredHeight: 25
                 disabled: !toggle_hotkey_checkbox.checked
+
+                Keys.onPressed: event => {
+                                    Settings.toggleHotkey.setHotkey(
+                                        event.key, event.modifiers,
+                                        event.nativeScanCode, true)
+                                }
             }
         }
 

@@ -23,16 +23,18 @@ public:
 
     explicit Hotkey(QObject *parent,
                     const int ID,
-                    quint32 defKey = 0x56, // 'V' char key-code.
-                    quint32 defMods = MOD_CONTROL);
+                    quint32 defKey = 0, // 'V' char key-code.
+                    quint32 defMods = 0);
 
     QString string() const;
     bool isEmpty() const;
 
-    bool registerHotkey();
+    bool registerHotkey(bool regDefault = false);
     bool unregisterHotkey();
+    bool registerDefault();
 
-    Q_INVOKABLE bool setHotkey(const int key, const int modifiers, quint32 nativeScanCode);
+    Q_INVOKABLE bool setHotkey(const int key, const int modifiers,
+                               quint32 nativeScanCode, bool reg = false);
 
 signals:
     void hotkeyChanged();
@@ -45,8 +47,8 @@ private:
     bool m_isEmpty = true;
     bool m_isRegistered = false;
     const int ID{};
-    quint32 m_defKey;
-    quint32 m_defMods;
+    quint32 m_defKey{};
+    quint32 m_defMods{};
 
     static quint32 scanCodeToVk(quint32 nativeScanCode);
     static quint32 toNativeModifiers(const int modifiers);
@@ -56,7 +58,6 @@ private:
     QString toString() const;
     quint32 getWinVk() const;
     quint32 getWinModifiers() const;
-    bool registerDefault();
 };
 
 #endif // HOTKEY_H

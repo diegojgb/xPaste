@@ -20,11 +20,6 @@ TextField {
     bottomPadding: 1
     renderType: Text.NativeRendering
 
-    Keys.onPressed: event => {
-                        Manager.settings.pasteHotkey.setHotkey(
-                            event.key, event.modifiers, event.nativeScanCode)
-                    }
-
     MouseArea {
         anchors.fill: parent
         cursorShape: Qt.ArrowCursor

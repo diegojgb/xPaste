@@ -5,7 +5,7 @@ Hotkey::Hotkey(QObject *parent, int ID,  quint32 defKey, quint32 defMods)
     : QObject{parent}, ID{ID}, m_defKey{defKey}, m_defMods{defMods}
 {}
 
-bool Hotkey::setHotkey(const int key, const int modifiers, quint32 nativeScanCode)
+bool Hotkey::setHotkey(const int key, const int modifiers, quint32 nativeScanCode, bool reg)
 {
     if (isKeyUnknown(key))
         return false;
@@ -14,12 +14,15 @@ bool Hotkey::setHotkey(const int key, const int modifiers, quint32 nativeScanCod
     m_qModifiers = modifiers;
     m_nativeScanCode = nativeScanCode;
 
+    m_isEmpty = false;
+
     if (m_isRegistered) {
         unregisterHotkey();
         registerHotkey();
     }
 
-    m_isEmpty = false;
+    if (!m_isRegistered && reg)
+        registerHotkey();
 
     emit hotkeyChanged();
 
@@ -34,13 +37,16 @@ QString Hotkey::toString() const
     return keyToString(m_qKey, m_qModifiers);
 }
 
-bool Hotkey::registerHotkey()
+bool Hotkey::registerHotkey(bool regDefault)
 {
     if (m_isRegistered)
         return false;
 
-    if (m_isEmpty)
+    if (regDefault)
         return registerDefault();
+
+    if (m_isEmpty)
+        return false;
 
     BOOL success = RegisterHotKey(NULL,
                                   ID,
@@ -76,7 +82,7 @@ bool Hotkey::unregisterHotkey()
 
 bool Hotkey::registerDefault()
 {
-    if (m_isRegistered)
+    if (m_isRegistered || m_defKey == 0)
         return false;
 
     BOOL success = RegisterHotKey(NULL, ID, m_defMods, m_defKey);
