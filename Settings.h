@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include "Hotkey.h"
+#include "TrayIcon.h"
 
 #include <QObject>
 #include <Windows.h>

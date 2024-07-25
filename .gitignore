@@ -1,4 +1,5 @@
 build/
 WinToast/
+assets/untracked/
 
 *.user

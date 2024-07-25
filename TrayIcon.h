@@ -25,7 +25,7 @@ public:
 
 public slots:
     static void sendNotification(const WinToastTemplate& templ);
-    static void sendNotification(const std::wstring title, const std::wstring subtitle);
+    static void sendNotification(const std::wstring title, const std::wstring subtitle, const std::wstring imagePath);
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void bringToTop();
 

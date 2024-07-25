@@ -96,11 +96,12 @@ void TrayIcon::sendNotification(const WinToastTemplate& templ)
     }
 }
 
-void TrayIcon::sendNotification(const std::wstring title, const std::wstring subtitle)
+void TrayIcon::sendNotification(const std::wstring title, const std::wstring subtitle, const std::wstring imagePath)
 {
     WinToastTemplate templ = WinToastTemplate(WinToastTemplate::ImageAndText02);
     templ.setTextField(title, WinToastTemplate::FirstLine);
     templ.setTextField(subtitle, WinToastTemplate::SecondLine);
+    templ.setImagePath(imagePath);
 
     sendNotification(templ);
 }

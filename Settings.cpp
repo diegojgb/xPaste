@@ -18,8 +18,20 @@ Hotkey *Settings::toggleHotkey()
 }
 
 void Settings::togglePasteActive()
-{
+{   
     setPasteActive(!m_pasteActive);
+
+    QString path = QCoreApplication::applicationDirPath()
+        + (m_pasteActive ? "/assets/green-check.png" : "/assets/red-cross.png");
+
+    if (m_pasteActive)
+        TrayIcon::sendNotification(L"Pasting ON",
+                                   L"Simulated pasting is now turned on.",
+                                   path.toStdWString());
+    else
+        TrayIcon::sendNotification(L"Pasting OFF",
+                                   L"Simulated pasting is now turned off.",
+                                   path.toStdWString());
 }
 
 bool Settings::pasteActive() const
