@@ -18,11 +18,13 @@ find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Widgets QuickControls2)
 
 qt_standard_project_setup()
 
+add_subdirectory(WinToast)
+
 qt_add_executable(appxPasteQT
     main.cpp
 )
 
-# qt_policy(SET QTP0001 OLD)
+qt_policy(SET QTP0001 NEW)
 
 qt_add_qml_module(appxPasteQT
     URI xPasteQT
@@ -46,6 +48,10 @@ qt_add_qml_module(appxPasteQT
         HotkeyEventFilter.h
         Paster.h Paster.cpp
         Utils.h Utils.cpp
+        TrayIcon.h TrayIcon.cpp
+        ToastHandler.h
+        Registry.h Registry.cpp
+        Manager.h Manager.cpp
 
     RESOURCES
         assets/light/about.png
@@ -84,6 +90,7 @@ target_link_libraries(appxPasteQT PRIVATE
     Qt6::Quick
     Qt6::QuickControls2
     Qt6::Widgets
+    WinToast
     dwmapi
 )
 

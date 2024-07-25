@@ -72,14 +72,14 @@ ApplicationWindow {
                 Rectangle {
                     id: on_off_switch
 
-                    property bool checked: Settings.pasteActive
+                    property bool checked: Manager.settings.pasteActive
 
                     color: root.darkEnabled ? '#333' : '#e4e4e4'
                     Layout.fillWidth: true
                     Layout.preferredHeight: 75
 
                     onCheckedChanged: {
-                        Settings.pasteActive = checked
+                        Manager.settings.pasteActive = checked
                     }
 
                     Behavior on color {

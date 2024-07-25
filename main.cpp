@@ -1,7 +1,8 @@
 #include "HotkeyEventFilter.h"
+#include "Manager.h"
+#include "Paster.h"
 #include "Settings.h"
 #include "WindowThemeSetter.h"
-#include "Paster.h"
 
 #include <QApplication>
 #include <QIcon>
@@ -35,12 +36,12 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    auto *settings = new Settings(&app);
+    auto* manager = new Manager(&app);
 
-    engine.rootContext()->setContextProperty("Settings", settings);
+    engine.rootContext()->setContextProperty("Manager", manager);
     engine.rootContext()->setContextProperty("ThemeSetter", themeSetter);
 
-    const QUrl url(u"qrc:/xPasteQT/Main.qml"_qs);
+    const QUrl url(u"qrc:/qt/qml/xPasteQT/Main.qml"_qs);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
@@ -49,12 +50,20 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
+    if (engine.rootObjects().isEmpty())
+        return -1;
+
+    QObject* root = engine.rootObjects().at(0);
+    QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(root);
+
+    manager->initTrayIcon(&app, mainWindow);
+
     // Add a filter/listener for global hotkey events.
     auto* eventFilter = new HotkeyEventFilter();
     app.installNativeEventFilter(eventFilter);
 
     QObject::connect(eventFilter, &HotkeyEventFilter::pasteHotkeyActivated, Paster::pasteClipboard);
-    QObject::connect(eventFilter, &HotkeyEventFilter::toggleHotkeyActivated, settings, &Settings::togglePasteActive);
+    QObject::connect(eventFilter, &HotkeyEventFilter::toggleHotkeyActivated, manager->settings(), &Settings::togglePasteActive);
 
     return app.exec();
 }
