@@ -18,6 +18,7 @@ class Settings : public QObject
     Q_PROPERTY(bool pasteActive READ pasteActive WRITE setPasteActive NOTIFY pasteActiveChanged FINAL)
     Q_PROPERTY(bool toggleActive READ toggleActive WRITE setToggleActive NOTIFY toggleActiveChanged FINAL)
     Q_PROPERTY(bool customHotkeyEnabled READ customHotkeyEnabled WRITE setCustomHotkeyEnabled NOTIFY customHotkeyEnabledChanged FINAL)
+    Q_PROPERTY(bool disableToggleToasts READ disableToggleToasts WRITE setDisableToggleToasts NOTIFY disableToggleToastsChanged FINAL)
 
 public:
     explicit Settings(QObject *parent = nullptr);
@@ -34,6 +35,9 @@ public:
     bool customHotkeyEnabled() const;
     void setCustomHotkeyEnabled(bool newCustomHotkeyEnabled);
 
+    bool disableToggleToasts() const;
+    void setDisableToggleToasts(bool newDisableToggleToasts);
+
 public slots:
     void togglePasteActive();
 
@@ -41,6 +45,7 @@ signals:
     void pasteActiveChanged();
     void toggleActiveChanged();
     void customHotkeyEnabledChanged();
+    void disableToggleToastsChanged();
 
 private:
     Hotkey m_pasteHotkey;
@@ -48,6 +53,7 @@ private:
     bool m_pasteActive = false;
     bool m_toggleActive = false;
     bool m_customHotkeyEnabled = false;
+    bool m_disableToggleToasts = false;
 };
 
 #endif // SETTINGS_H

@@ -21,6 +21,9 @@ void Settings::togglePasteActive()
 {   
     setPasteActive(!m_pasteActive);
 
+    if (m_disableToggleToasts)
+        return;
+
     QString path = QCoreApplication::applicationDirPath()
         + (m_pasteActive ? "/assets/green-check.png" : "/assets/red-cross.png");
 
@@ -103,4 +106,19 @@ void Settings::setCustomHotkeyEnabled(bool newCustomHotkeyEnabled)
     }
 
     emit customHotkeyEnabledChanged();
+}
+
+bool Settings::disableToggleToasts() const
+{
+    return m_disableToggleToasts;
+}
+
+void Settings::setDisableToggleToasts(bool newDisableToggleToasts)
+{
+    if (m_disableToggleToasts == newDisableToggleToasts)
+        return;
+
+    m_disableToggleToasts = newDisableToggleToasts;
+
+    emit disableToggleToastsChanged();
 }

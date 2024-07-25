@@ -124,6 +124,9 @@ ColumnLayout {
             text: "Disable on/off notifications."
             darkEnabled: root.darkEnabled
             disabled: !toggle_hotkey_checkbox.checked
+            checked: Manager.settings.disableToggleToasts
+
+            onCheckedChanged: Manager.settings.disableToggleToasts = checked
         }
 
         RowLayout {
