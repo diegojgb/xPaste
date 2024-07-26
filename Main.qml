@@ -24,6 +24,15 @@ ApplicationWindow {
     property bool darkEnabled: ThemeSetter.darkEnabled
     property int activeView: Main.View.SettingsView
 
+    onClosing: close => {
+                   if (Manager.settings.closeBtnExits) {
+                       return
+                   }
+
+                   hide()
+                   close.accepted = false
+               }
+
     onDarkEnabledChanged: {
         ThemeSetter.darkEnabled = root.darkEnabled
     }

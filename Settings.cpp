@@ -200,3 +200,18 @@ void Settings::setDisableTimeToast(bool newDisableTimeToast)
 
     emit disableTimeToastChanged();
 }
+
+bool Settings::closeBtnExits() const
+{
+    return m_closeBtnExits;
+}
+
+void Settings::setCloseBtnExits(bool newCloseBtnExits)
+{
+    if (m_closeBtnExits == newCloseBtnExits)
+        return;
+
+    m_closeBtnExits = newCloseBtnExits;
+
+    emit closeBtnExitsChanged();
+}

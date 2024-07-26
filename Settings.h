@@ -25,6 +25,7 @@ class Settings : public QObject
     Q_PROPERTY(bool autoDisable READ autoDisable WRITE setAutoDisable NOTIFY autoDisableChanged FINAL)
     Q_PROPERTY(int autoDisableSeconds READ autoDisableSeconds WRITE setAutoDisableSeconds NOTIFY autoDisableSecondsChanged FINAL)
     Q_PROPERTY(bool disableTimeToast READ disableTimeToast WRITE setDisableTimeToast NOTIFY disableTimeToastChanged FINAL)
+    Q_PROPERTY(bool closeBtnExits READ closeBtnExits WRITE setCloseBtnExits NOTIFY closeBtnExitsChanged FINAL)
 
 public:
     explicit Settings(QObject *parent = nullptr);
@@ -53,6 +54,9 @@ public:
     bool disableTimeToast() const;
     void setDisableTimeToast(bool newDisableTimeToast);
 
+    bool closeBtnExits() const;
+    void setCloseBtnExits(bool newCloseBtnExits);
+
 public slots:
     void togglePasteActive();
     void timerUpdateTitle();
@@ -65,6 +69,7 @@ signals:
     void autoDisableChanged();
     void autoDisableSecondsChanged();
     void disableTimeToastChanged();
+    void closeBtnExitsChanged();
 
     void changeWindowTitle(const QString &windowTitle);
 
@@ -73,15 +78,17 @@ private:
     Hotkey m_toggleHotkey;
     QTimer m_timer;
     int m_remainingTime{};
-    bool m_pasteActive = false;
-    bool m_toggleActive = false;
-    bool m_customHotkeyEnabled = false;
-    bool m_disableToggleToasts = false;
-    bool m_autoDisable = false;
-    int m_autoDisableSeconds = 0;
-    bool m_disableTimeToast = false;
+    bool m_pasteActive{};
+    bool m_toggleActive{};
+    bool m_customHotkeyEnabled{};
+    bool m_disableToggleToasts{};
+    bool m_autoDisable{};
+    int m_autoDisableSeconds{};
+    bool m_disableTimeToast{};
+    bool m_closeBtnExits{};
 
     void startCountdown();
+
 };
 
 #endif // SETTINGS_H

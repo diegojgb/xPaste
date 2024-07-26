@@ -42,6 +42,9 @@ ColumnLayout {
         CustomCheckbox {
             text: "Close button exits the application."
             darkEnabled: root.darkEnabled
+            checked: Manager.settings.closeBtnExits
+
+            onCheckedChanged: Manager.settings.closeBtnExits = checked
         }
 
         CustomCheckbox {
