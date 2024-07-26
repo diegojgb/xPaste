@@ -246,3 +246,18 @@ void Settings::setHideOnMinimize(bool newHideOnMinimize)
 
     emit hideOnMinimizeChanged();
 }
+
+bool Settings::startMinimized() const
+{
+    return m_startMinimized;
+}
+
+void Settings::setStartMinimized(bool newStartMinimized)
+{
+    if (m_startMinimized == newStartMinimized)
+        return;
+
+    m_startMinimized = newStartMinimized;
+
+    emit startMinimizedChanged();
+}

@@ -32,6 +32,8 @@ ColumnLayout {
         CustomCheckbox {
             text: "Start xPaste minimized to the system tray."
             darkEnabled: root.darkEnabled
+            checked: Manager.settings.startMinimized
+            onCheckedChanged: Manager.settings.startMinimized = checked
         }
 
         CustomCheckbox {

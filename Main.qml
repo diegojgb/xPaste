@@ -5,7 +5,7 @@ import QtQuick.Controls
 ApplicationWindow {
     id: root
 
-    visible: true
+    visible: false
     title: qsTr('xPaste')
 
     width: 700
@@ -47,6 +47,8 @@ ApplicationWindow {
     Component.onCompleted: {
         if (root.darkEnabled)
             ThemeSetter.updateWindowTheme()
+
+        root.visible = !Manager.settings.startMinimized
     }
 
     palette: root.darkEnabled ? darkTheme : lightTheme
