@@ -12,7 +12,9 @@
 #include <QQuickWindow>
 #include <QQmlContext>
 
+#include <SingleApplication.h>
 #include <dwmapi.h>
+
 
 bool isDark(Qt::ColorScheme colorScheme) {
     if (colorScheme == Qt::ColorScheme::Light) {
@@ -24,7 +26,7 @@ bool isDark(Qt::ColorScheme colorScheme) {
 int main(int argc, char *argv[])
 {
     qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
-    QApplication app(argc, argv);
+    SingleApplication app(argc, argv);
     QQuickStyle::setStyle("Fusion");
     // app.setWindowIcon(QIcon(":/xPasteQT/assets/xpaste_logo.ico"));
 
@@ -65,6 +67,10 @@ int main(int argc, char *argv[])
 
     QObject::connect(eventFilter, &HotkeyEventFilter::pasteHotkeyActivated, Paster::pasteClipboard);
     QObject::connect(eventFilter, &HotkeyEventFilter::toggleHotkeyActivated, manager->settings(), &Settings::togglePasteActive);
+    QObject::connect(&app, &SingleApplication::instanceStarted, mainWindow, &QWindow::showNormal);
+    QObject::connect(&app, &SingleApplication::instanceStarted, mainWindow, [mainWindow]() {
+        SetForegroundWindow((HWND)mainWindow->winId());
+    });
 
     return app.exec();
 }

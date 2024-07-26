@@ -7,13 +7,27 @@
 # - Remake the up/down indicators of the SpinBox to be able to transition their color when changing themes.
 
 
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.24)
 
 project(xPasteQT LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
+include(FetchContent)
+
+set(QT_DEFAULT_MAJOR_VERSION 6 CACHE STRING "Qt version to use, defaults to 6")
+set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
+
+FetchContent_Declare(
+    SingleApplication
+    GIT_REPOSITORY https://github.com/itay-grudev/SingleApplication.git
+    GIT_TAG        8c48163c4d3fbba603cfe8a5b94046c9dad71825
+)
+
+FetchContent_MakeAvailable(SingleApplication)
+
+find_package(SingleApplication)
 find_package(Qt6 6.4 REQUIRED COMPONENTS Quick Widgets QuickControls2)
 
 qt_standard_project_setup()
@@ -92,6 +106,8 @@ target_link_libraries(appxPasteQT PRIVATE
     Qt6::Widgets
     WinToast
     dwmapi
+
+    SingleApplication::SingleApplication
 )
 
 include(GNUInstallDirs)
