@@ -26,6 +26,7 @@ class Settings : public QObject
     Q_PROPERTY(int autoDisableSeconds READ autoDisableSeconds WRITE setAutoDisableSeconds NOTIFY autoDisableSecondsChanged FINAL)
     Q_PROPERTY(bool disableTimeToast READ disableTimeToast WRITE setDisableTimeToast NOTIFY disableTimeToastChanged FINAL)
     Q_PROPERTY(bool closeBtnExits READ closeBtnExits WRITE setCloseBtnExits NOTIFY closeBtnExitsChanged FINAL)
+    Q_PROPERTY(bool singleClick READ singleClick WRITE setSingleClick NOTIFY singleClickChanged FINAL)
 
 public:
     explicit Settings(QObject *parent = nullptr);
@@ -57,6 +58,9 @@ public:
     bool closeBtnExits() const;
     void setCloseBtnExits(bool newCloseBtnExits);
 
+    bool singleClick() const;
+    void setSingleClick(bool newSingleClick);
+
 public slots:
     void togglePasteActive();
     void timerUpdateTitle();
@@ -70,6 +74,8 @@ signals:
     void autoDisableSecondsChanged();
     void disableTimeToastChanged();
     void closeBtnExitsChanged();
+    void singleClickChanged();
+    void singleClickChangedOverload(bool newValue);
 
     void changeWindowTitle(const QString &windowTitle);
 
@@ -86,9 +92,9 @@ private:
     int m_autoDisableSeconds{};
     bool m_disableTimeToast{};
     bool m_closeBtnExits{};
+    bool m_singleClick{};
 
     void startCountdown();
-
 };
 
 #endif // SETTINGS_H

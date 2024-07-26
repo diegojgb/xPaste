@@ -37,6 +37,9 @@ ColumnLayout {
         CustomCheckbox {
             text: "Open from tray with a single click."
             darkEnabled: root.darkEnabled
+            checked: Manager.settings.singleClick
+
+            onCheckedChanged: Manager.settings.singleClick = checked
         }
 
         CustomCheckbox {

@@ -215,3 +215,19 @@ void Settings::setCloseBtnExits(bool newCloseBtnExits)
 
     emit closeBtnExitsChanged();
 }
+
+bool Settings::singleClick() const
+{
+    return m_singleClick;
+}
+
+void Settings::setSingleClick(bool newSingleClick)
+{
+    if (m_singleClick == newSingleClick)
+        return;
+
+    m_singleClick = newSingleClick;
+
+    emit singleClickChanged();
+    emit singleClickChangedOverload(newSingleClick);
+}

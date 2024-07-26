@@ -3,11 +3,12 @@
 using namespace WinToastLib;
 
 
-TrayIcon::TrayIcon(QObject *parent, QQuickWindow *rootWindow)
+TrayIcon::TrayIcon(QObject *parent, QQuickWindow *rootWindow, bool singleClick)
     : QObject{parent}
     , m_rootWindow{rootWindow}
     , m_hwnd{(HWND)rootWindow->winId()}
     , m_trayIcon{new QSystemTrayIcon(rootWindow)}
+    , m_singleClick{singleClick}
 {
     QMenu *trayIconMenu = createMenu();
 
@@ -19,8 +20,11 @@ TrayIcon::TrayIcon(QObject *parent, QQuickWindow *rootWindow)
     initWinToast();
 
     connect(m_trayIcon, &QSystemTrayIcon::activated, this, &TrayIcon::trayIconActivated);
-    connect(this, &TrayIcon::singleClicked, m_rootWindow, &QQuickWindow::showNormal);
-    connect(this, &TrayIcon::singleClicked, this, &TrayIcon::bringToTop);
+
+    if (singleClick)
+        connect(this, &TrayIcon::singleClicked, this, &TrayIcon::showWindow);
+    else
+        connect(this, &TrayIcon::doubleClicked, this, &TrayIcon::showWindow);
 }
 
 void TrayIcon::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
@@ -36,11 +40,32 @@ void TrayIcon::bringToTop()
     SetForegroundWindow(m_hwnd);
 }
 
+void TrayIcon::onSingleClickChanged(bool singleClick)
+{
+    if (m_singleClick == singleClick)
+        return;
+
+    if (singleClick) {
+        disconnect(this, &TrayIcon::doubleClicked, this, &TrayIcon::showWindow);
+        connect(this, &TrayIcon::singleClicked, this, &TrayIcon::showWindow);
+    } else {
+        disconnect(this, &TrayIcon::singleClicked, this, &TrayIcon::showWindow);
+        connect(this, &TrayIcon::doubleClicked, this, &TrayIcon::showWindow);
+    }
+
+    m_singleClick = singleClick;
+}
+
+void TrayIcon::showWindow()
+{
+    m_rootWindow->showNormal();
+    bringToTop();
+}
+
 QMenu* TrayIcon::createMenu()
 {
     QAction* restoreAction = new QAction(QObject::tr("&Restore"), m_rootWindow);
-    connect(restoreAction, &QAction::triggered, m_rootWindow, &QQuickWindow::showNormal);
-    connect(restoreAction, &QAction::triggered, this, &TrayIcon::bringToTop);
+    connect(restoreAction, &QAction::triggered, this, &TrayIcon::showWindow);
 
     QAction* quitAction = new QAction(QObject::tr("&Quit"), m_rootWindow);
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
