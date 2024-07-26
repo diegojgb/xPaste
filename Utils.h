@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMessageBox>
+#include <QApplication>
 #include <QTime>
 
 
@@ -12,7 +13,8 @@ public:
     static void throwError(QString errorStr);
     static void showInfo(QString infoStr);
     static void showCritical(QString errorStr);
-    static QString formatSeconds(int total_seconds);
+    static void errorExit(QString errorStr);
+    static QString formatSeconds(int totalSeconds);
 };
 
 #endif // UTILS_H

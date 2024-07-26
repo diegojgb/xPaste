@@ -55,7 +55,7 @@ QMenu* TrayIcon::createMenu()
 void TrayIcon::initWinToast()
 {
     if (!WinToast::isCompatible())
-        Utils::throwError("WinToast: Error, your system in not supported!");
+        Utils::errorExit("[WinToast]: Error, your system in not supported!");
 
     WinToast::instance()->setAppName(L"WatchLog");
     const auto aumi = WinToast::configureAUMI(L"diegojgb", L"xPaste", L"ToastNotifications");
@@ -64,7 +64,7 @@ void TrayIcon::initWinToast()
 
     // Add icon and name to registry, so Windows can display them in toast notifications.
     if (!Registry::createRegistryKey(HKEY_CURRENT_USER, L"Software\\Classes\\AppUserModelId\\diegojgb.xPaste.ToastNotifications")) {
-        Utils::throwError("Error opening or creating new Registry key");
+        Utils::errorExit("[Registry]: Error opening or creating new Registry key");
     }
 
     if (!Registry::writeStringInRegistry(
@@ -72,7 +72,7 @@ void TrayIcon::initWinToast()
             L"Software\\Classes\\AppUserModelId\\diegojgb.xPaste.ToastNotifications",
             L"DisplayName",
             L"xPaste")) {
-        Utils::throwError("Error saving toast DisplayName Regitry value");
+        Utils::errorExit("[Registry]: Error saving toast DisplayName Regitry value");
     }
 
     QString defaultIcon = QCoreApplication::applicationDirPath() + "/assets/xpaste_logo.ico";
@@ -82,17 +82,17 @@ void TrayIcon::initWinToast()
             L"Software\\Classes\\AppUserModelId\\diegojgb.xPaste.ToastNotifications",
             L"IconUri",
             defaultIcon.toStdWString().c_str())) {
-        Utils::throwError("Error saving toast IconUri Regitry value");
+        Utils::errorExit("[Registry]: Error saving toast IconUri Regitry value");
     }
 
     if (!WinToast::instance()->initialize())
-        Utils::throwError("Error, could not initialize WinToast!");
+        Utils::errorExit("[WinToast]: Error, could not initialize WinToast!");
 }
 
 void TrayIcon::sendNotification(const WinToastTemplate& templ)
 {
     if (WinToast::instance()->showToast(templ, new ToastHandler()) < 0) {
-        Utils::throwError("Could not launch your toast notification!");
+        Utils::errorExit("[WinToast]: Could not launch your toast notification!");
     }
 }
 

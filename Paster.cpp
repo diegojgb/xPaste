@@ -59,19 +59,19 @@ std::wstring Paster::getClipboardText()
 {
     // Try opening the clipboard
     if (!OpenClipboard(nullptr)) {
-        Utils::throwError("Failed to open clipboard.");
+        Utils::errorExit("[Paster]: Failed to open clipboard.");
     }
 
     HANDLE hData = GetClipboardData(CF_UNICODETEXT);
     if (hData == nullptr) {
         CloseClipboard();
-        Utils::throwError("Failed to get handle of clipboard object for UNICODE text.");
+        Utils::errorExit("[Paster]: Failed to get handle of clipboard object for UNICODE text.");
     }
 
     wchar_t* pszText = static_cast<wchar_t*>(GlobalLock(hData));
     if (pszText == nullptr) {
         CloseClipboard();
-        Utils::throwError("[Paster] Erorr while locking the handle to get the actual text pointer.");
+        Utils::errorExit("[Paster]: Error while locking the handle to get the actual text pointer.");
     }
 
     std::wstring text(pszText);

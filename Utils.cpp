@@ -14,6 +14,12 @@ QString Utils::formatSeconds(int totalSeconds) {
     return time.toString();
 }
 
+void Utils::errorExit(QString errorStr)
+{
+    showCritical(errorStr);
+    qApp->exit(1);
+}
+
 void Utils::throwError(QString errorStr)
 {
     showCritical(errorStr);
