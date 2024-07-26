@@ -2,7 +2,9 @@
 
 Manager::Manager(QObject *parent)
     : QObject{parent}
-{}
+{
+    connect(&m_settings, &Settings::changeWindowTitle, this, &Manager::onChangeWindowTitle);
+}
 
 Settings* Manager::settings()
 {
@@ -15,4 +17,14 @@ void Manager::initTrayIcon(QObject *parent, QQuickWindow *rootWindow)
         Utils::throwError("Tray icon can only be initialized once.");
 
     m_trayIcon = new TrayIcon(parent, rootWindow);
+}
+
+void Manager::setMainWindow(QQuickWindow *window)
+{
+    m_mainWindow = window;
+}
+
+void Manager::onChangeWindowTitle(const QString &windowTitle)
+{
+    m_mainWindow->setTitle(windowTitle);
 }

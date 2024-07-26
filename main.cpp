@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    auto* manager = new Manager(&app);
+    auto *manager = new Manager(&app);
 
     engine.rootContext()->setContextProperty("Manager", manager);
     engine.rootContext()->setContextProperty("ThemeSetter", themeSetter);
@@ -53,10 +53,11 @@ int main(int argc, char *argv[])
     if (engine.rootObjects().isEmpty())
         return -1;
 
-    QObject* root = engine.rootObjects().at(0);
-    QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(root);
+    QObject *root = engine.rootObjects().at(0);
+    QQuickWindow *mainWindow = qobject_cast<QQuickWindow*>(root);
 
     manager->initTrayIcon(&app, mainWindow);
+    manager->setMainWindow(mainWindow);
 
     // Add a filter/listener for global hotkey events.
     auto* eventFilter = new HotkeyEventFilter();

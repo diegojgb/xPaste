@@ -20,7 +20,13 @@ public:
     Settings* settings();
     void initTrayIcon(QObject* parent, QQuickWindow* root);
 
+    void setMainWindow(QQuickWindow *window);
+
+public slots:
+    void onChangeWindowTitle(const QString &windowTitle);
+
 private:
+    QQuickWindow* m_mainWindow{};
     Settings m_settings;
     TrayIcon* m_trayIcon{};
 };

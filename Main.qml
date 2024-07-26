@@ -89,7 +89,7 @@ ApplicationWindow {
                     }
 
                     Image {
-                        source: on_off_switch.checked ? 'assets/on_switch.png' : 'assets/off_switch.png'
+                        source: Manager.settings.pasteActive ? 'assets/on_switch.png' : 'assets/off_switch.png'
                         anchors.centerIn: parent
 
                         MouseArea {

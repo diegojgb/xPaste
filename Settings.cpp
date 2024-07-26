@@ -5,7 +5,9 @@ Settings::Settings(QObject *parent)
     : QObject{parent}
     , m_pasteHotkey{this, Hotkey::PasteHotkeyID, 0x56, MOD_CONTROL} // 0x56 == 'V'
     , m_toggleHotkey{this, Hotkey::ToggleHotkeyID}
-{}
+{
+    connect(&m_timer, &QTimer::timeout, this, &Settings::timerUpdateTitle);
+}
 
 Hotkey* Settings::pasteHotkey()
 {
@@ -37,6 +39,34 @@ void Settings::togglePasteActive()
                                    path.toStdWString());
 }
 
+void Settings::timerUpdateTitle()
+{
+    if (m_remainingTime > 0) {
+        emit changeWindowTitle("xPaste - " + Utils::formatSeconds(m_remainingTime));
+    } else if (m_remainingTime == 0) {
+        emit changeWindowTitle("Time is up!");
+        setPasteActive(false);
+        if (!m_disableTimeToast)
+            TrayIcon::sendNotification(L"Time's up!",
+                                       L"Simulated pasting is now turned off.",
+                                        QCoreApplication::applicationDirPath().toStdWString() + L"/assets/red-cross.png");
+    } else if (m_remainingTime == -3) {
+        emit changeWindowTitle("xPaste");
+        m_timer.stop();
+    }
+
+    m_remainingTime--;
+}
+
+void Settings::startCountdown()
+{
+    m_remainingTime = m_autoDisableSeconds;
+    emit changeWindowTitle("xPaste - " + Utils::formatSeconds(m_remainingTime));
+    m_remainingTime--;
+
+    m_timer.start(1000); // 1 second interval
+}
+
 bool Settings::pasteActive() const
 {
     return m_pasteActive;
@@ -55,6 +85,9 @@ void Settings::setPasteActive(bool newPasteActive)
         m_pasteHotkey.registerHotkey(registerDefault);
     else
         m_pasteHotkey.unregisterHotkey();
+
+    if (newPasteActive && m_autoDisable)
+        startCountdown();
 
     emit pasteActiveChanged();
 }
@@ -121,4 +154,49 @@ void Settings::setDisableToggleToasts(bool newDisableToggleToasts)
     m_disableToggleToasts = newDisableToggleToasts;
 
     emit disableToggleToastsChanged();
+}
+
+bool Settings::autoDisable() const
+{
+    return m_autoDisable;
+}
+
+void Settings::setAutoDisable(bool newAutoDisable)
+{
+    if (m_autoDisable == newAutoDisable)
+        return;
+
+    m_autoDisable = newAutoDisable;
+
+    emit autoDisableChanged();
+}
+
+int Settings::autoDisableSeconds() const
+{
+    return m_autoDisableSeconds;
+}
+
+void Settings::setAutoDisableSeconds(int newAutoDisableSeconds)
+{
+    if (m_autoDisableSeconds == newAutoDisableSeconds)
+        return;
+
+    m_autoDisableSeconds = newAutoDisableSeconds;
+
+    emit autoDisableSecondsChanged();
+}
+
+bool Settings::disableTimeToast() const
+{
+    return m_disableTimeToast;
+}
+
+void Settings::setDisableTimeToast(bool newDisableTimeToast)
+{
+    if (m_disableTimeToast == newDisableTimeToast)
+        return;
+
+    m_disableTimeToast = newDisableTimeToast;
+
+    emit disableTimeToastChanged();
 }

@@ -135,9 +135,11 @@ ColumnLayout {
 
             CustomCheckbox {
                 id: time_checkbox
-
                 text: "Automatically disable the hook after"
                 darkEnabled: root.darkEnabled
+                checked: Manager.settings.autoDisable
+
+                onCheckedChanged: Manager.settings.autoDisable = checked
             }
 
             CustomSpinBox {
@@ -145,6 +147,9 @@ ColumnLayout {
                 darkEnabled: root.darkEnabled
                 enabled: time_checkbox.checked
                 editable: time_checkbox.checked
+                value: Manager.settings.autoDisableSeconds
+
+                onValueChanged: Manager.settings.autoDisableSeconds = value
             }
         }
 
@@ -153,6 +158,9 @@ ColumnLayout {
             text: "Disable \"Time's up\" notification."
             darkEnabled: root.darkEnabled
             disabled: !time_checkbox.checked
+            checked: Manager.settings.disableTimeToast
+
+            onCheckedChanged: Manager.settings.disableTimeToast = checked
         }
     }
 }

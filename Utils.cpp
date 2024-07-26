@@ -6,6 +6,14 @@ void Utils::showCritical(QString errorStr)
     QMessageBox::critical(nullptr, "WatchLog", errorStr);
 }
 
+QString Utils::formatSeconds(int totalSeconds) {
+    QTime time(0, 0, 0);
+
+    time = time.addSecs(totalSeconds);
+
+    return time.toString();
+}
+
 void Utils::throwError(QString errorStr)
 {
     showCritical(errorStr);
