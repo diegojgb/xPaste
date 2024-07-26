@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QKeySequence>
 #include <QDebug>
+#include <QSettings>
 
 #include <iostream>
 #include <Windows.h>
@@ -22,8 +23,10 @@ public:
     static constexpr int ToggleHotkeyID = 1001;
 
     explicit Hotkey(QObject *parent,
+                    QString name,
                     const int ID,
-                    quint32 defKey = 0, // 'V' char key-code.
+                    QSettings &m_qSettings,
+                    quint32 defKey = 0,
                     quint32 defMods = 0);
 
     QString string() const;
@@ -40,6 +43,8 @@ signals:
     void hotkeyChanged();
 
 private:
+    QString m_name;
+    QSettings &m_qSettings;
     QString m_string;
     int m_qKey{};
     int m_qModifiers{};
@@ -58,6 +63,7 @@ private:
     QString toString() const;
     quint32 getWinVk() const;
     quint32 getWinModifiers() const;
+    void saveHotkey();
 };
 
 #endif // HOTKEY_H

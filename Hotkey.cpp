@@ -1,13 +1,23 @@
 #include "Hotkey.h"
 
 
-Hotkey::Hotkey(QObject *parent, int ID,  quint32 defKey, quint32 defMods)
-    : QObject{parent}, ID{ID}, m_defKey{defKey}, m_defMods{defMods}
-{}
+Hotkey::Hotkey(QObject *parent, QString name, int ID, QSettings &m_qSettings, quint32 defKey, quint32 defMods)
+    : QObject{parent}
+    , m_name{name}
+    , ID{ID}
+    , m_defKey{defKey}
+    , m_defMods{defMods}
+    , m_qSettings{m_qSettings}
+{
+    setHotkey(m_qSettings.value(m_name + "QKey", 0).toInt(),
+              m_qSettings.value(m_name + "QModifiers", 0).toInt(),
+              m_qSettings.value(m_name + "NativeScanCode", 0).toUInt(),
+              m_qSettings.value(m_name + "PasteActive", false).toBool());
+}
 
 bool Hotkey::setHotkey(const int key, const int modifiers, quint32 nativeScanCode, bool reg)
 {
-    if (isKeyUnknown(key))
+    if (isKeyUnknown(key) || key == 0)
         return false;
 
     m_qKey = key;
@@ -24,6 +34,7 @@ bool Hotkey::setHotkey(const int key, const int modifiers, quint32 nativeScanCod
     if (!m_isRegistered && reg)
         registerHotkey();
 
+    saveHotkey();
     emit hotkeyChanged();
 
     return true;
@@ -95,6 +106,13 @@ bool Hotkey::registerDefault()
     m_isRegistered = true;
 
     return true;
+}
+
+void Hotkey::saveHotkey()
+{
+    m_qSettings.setValue(m_name + "QKey", m_qKey);
+    m_qSettings.setValue(m_name + "QModifiers", m_qModifiers);
+    m_qSettings.setValue(m_name + "NativeScanCode", m_nativeScanCode);
 }
 
 quint32 Hotkey::getWinModifiers() const

@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QTimer>
+#include <QSettings>
 
 #include <Windows.h>
 
@@ -90,6 +91,8 @@ signals:
     void changeWindowTitle(const QString &windowTitle);
 
 private:
+    QString m_settingsFile;
+    QSettings m_qSettings;
     Hotkey m_pasteHotkey;
     Hotkey m_toggleHotkey;
     QTimer m_timer;

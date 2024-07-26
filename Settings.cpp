@@ -3,8 +3,21 @@
 
 Settings::Settings(QObject *parent)
     : QObject{parent}
-    , m_pasteHotkey{this, Hotkey::PasteHotkeyID, 0x56, MOD_CONTROL} // 0x56 == 'V'
-    , m_toggleHotkey{this, Hotkey::ToggleHotkeyID}
+    , m_pasteHotkey{this, "PasteHotkey", Hotkey::PasteHotkeyID, m_qSettings, 0x56, MOD_CONTROL} // 0x56 == 'V'
+    , m_toggleHotkey{this, "ToggleHotkey", Hotkey::ToggleHotkeyID, m_qSettings}
+    , m_settingsFile{QApplication::applicationDirPath() + "/config.ini"}
+    , m_qSettings{QSettings(m_settingsFile, QSettings::IniFormat)}
+    , m_pasteActive{m_qSettings.value("PasteActive", false).toBool()}
+    , m_toggleActive{m_qSettings.value("ToggleActive", false).toBool()}
+    , m_customHotkeyEnabled{m_qSettings.value("CustomHotkeyEnabled", false).toBool()}
+    , m_disableToggleToasts{m_qSettings.value("DisableToggleToasts", false).toBool()}
+    , m_autoDisable{m_qSettings.value("AutoDisableEnabled", false).toBool()}
+    , m_autoDisableSeconds{m_qSettings.value("AutoDisableSeconds", 30).toInt()}
+    , m_disableTimeToast{m_qSettings.value("DisableTimeToast", false).toBool()}
+    , m_closeBtnExits{m_qSettings.value("CloseButtonExits", false).toBool()}
+    , m_singleClick{m_qSettings.value("TraySingleClick", false).toBool()}
+    , m_hideOnMinimize{m_qSettings.value("HideOnMinimize", false).toBool()}
+    , m_startMinimized{m_qSettings.value("StartMinimized", false).toBool()}
 {
     connect(&m_timer, &QTimer::timeout, this, &Settings::timerUpdateTitle);
 }
@@ -41,16 +54,22 @@ void Settings::togglePasteActive()
 
 void Settings::timerUpdateTitle()
 {
-    if (m_remainingTime > 0) {
+    if (m_remainingTime > 0)
+    {
         emit changeWindowTitle("xPaste - " + Utils::formatSeconds(m_remainingTime));
-    } else if (m_remainingTime == 0) {
+    }
+    else if (m_remainingTime == 0)
+    {
         emit changeWindowTitle("Time is up!");
         setPasteActive(false);
+
         if (!m_disableTimeToast)
             TrayIcon::sendNotification(L"Time's up!",
                                        L"Simulated pasting is now turned off.",
                                         QCoreApplication::applicationDirPath().toStdWString() + L"/assets/red-cross.png");
-    } else if (m_remainingTime == -3) {
+    }
+    else if (m_remainingTime == -3)
+    {
         emit changeWindowTitle("xPaste");
         m_timer.stop();
     }
@@ -89,6 +108,8 @@ void Settings::setPasteActive(bool newPasteActive)
     if (newPasteActive && m_autoDisable)
         startCountdown();
 
+    m_qSettings.setValue("PasteActive", newPasteActive);
+
     emit pasteActiveChanged();
 }
 
@@ -108,6 +129,8 @@ void Settings::setToggleActive(bool newToggleActive)
         m_toggleHotkey.registerHotkey();
     else
         m_toggleHotkey.unregisterHotkey();
+
+    m_qSettings.setValue("ToggleActive", newToggleActive);
 
     emit toggleActiveChanged();
 }
@@ -138,6 +161,8 @@ void Settings::setCustomHotkeyEnabled(bool newCustomHotkeyEnabled)
         }
     }
 
+    m_qSettings.setValue("CustomHotkeyEnabled", newCustomHotkeyEnabled);
+
     emit customHotkeyEnabledChanged();
 }
 
@@ -152,6 +177,8 @@ void Settings::setDisableToggleToasts(bool newDisableToggleToasts)
         return;
 
     m_disableToggleToasts = newDisableToggleToasts;
+
+    m_qSettings.setValue("DisableToggleToasts", newDisableToggleToasts);
 
     emit disableToggleToastsChanged();
 }
@@ -168,6 +195,8 @@ void Settings::setAutoDisable(bool newAutoDisable)
 
     m_autoDisable = newAutoDisable;
 
+    m_qSettings.setValue("AutoDisableEnabled", newAutoDisable);
+
     emit autoDisableChanged();
 }
 
@@ -182,6 +211,8 @@ void Settings::setAutoDisableSeconds(int newAutoDisableSeconds)
         return;
 
     m_autoDisableSeconds = newAutoDisableSeconds;
+
+    m_qSettings.setValue("AutoDisableSeconds", newAutoDisableSeconds);
 
     emit autoDisableSecondsChanged();
 }
@@ -198,6 +229,8 @@ void Settings::setDisableTimeToast(bool newDisableTimeToast)
 
     m_disableTimeToast = newDisableTimeToast;
 
+    m_qSettings.setValue("DisableTimeToast", newDisableTimeToast);
+
     emit disableTimeToastChanged();
 }
 
@@ -213,6 +246,8 @@ void Settings::setCloseBtnExits(bool newCloseBtnExits)
 
     m_closeBtnExits = newCloseBtnExits;
 
+    m_qSettings.setValue("CloseButtonExits", newCloseBtnExits);
+
     emit closeBtnExitsChanged();
 }
 
@@ -227,6 +262,8 @@ void Settings::setSingleClick(bool newSingleClick)
         return;
 
     m_singleClick = newSingleClick;
+
+    m_qSettings.setValue("TraySingleClick", newSingleClick);
 
     emit singleClickChanged();
     emit singleClickChangedOverload(newSingleClick);
@@ -244,6 +281,8 @@ void Settings::setHideOnMinimize(bool newHideOnMinimize)
 
     m_hideOnMinimize = newHideOnMinimize;
 
+    m_qSettings.setValue("HideOnMinimize", newHideOnMinimize);
+
     emit hideOnMinimizeChanged();
 }
 
@@ -258,6 +297,8 @@ void Settings::setStartMinimized(bool newStartMinimized)
         return;
 
     m_startMinimized = newStartMinimized;
+
+    m_qSettings.setValue("StartMinimized", newStartMinimized);
 
     emit startMinimizedChanged();
 }
