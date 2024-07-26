@@ -231,3 +231,18 @@ void Settings::setSingleClick(bool newSingleClick)
     emit singleClickChanged();
     emit singleClickChangedOverload(newSingleClick);
 }
+
+bool Settings::hideOnMinimize() const
+{
+    return m_hideOnMinimize;
+}
+
+void Settings::setHideOnMinimize(bool newHideOnMinimize)
+{
+    if (m_hideOnMinimize == newHideOnMinimize)
+        return;
+
+    m_hideOnMinimize = newHideOnMinimize;
+
+    emit hideOnMinimizeChanged();
+}

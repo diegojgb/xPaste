@@ -27,6 +27,7 @@ class Settings : public QObject
     Q_PROPERTY(bool disableTimeToast READ disableTimeToast WRITE setDisableTimeToast NOTIFY disableTimeToastChanged FINAL)
     Q_PROPERTY(bool closeBtnExits READ closeBtnExits WRITE setCloseBtnExits NOTIFY closeBtnExitsChanged FINAL)
     Q_PROPERTY(bool singleClick READ singleClick WRITE setSingleClick NOTIFY singleClickChanged FINAL)
+    Q_PROPERTY(bool hideOnMinimize READ hideOnMinimize WRITE setHideOnMinimize NOTIFY hideOnMinimizeChanged FINAL)
 
 public:
     explicit Settings(QObject *parent = nullptr);
@@ -61,6 +62,9 @@ public:
     bool singleClick() const;
     void setSingleClick(bool newSingleClick);
 
+    bool hideOnMinimize() const;
+    void setHideOnMinimize(bool newHideOnMinimize);
+
 public slots:
     void togglePasteActive();
     void timerUpdateTitle();
@@ -75,6 +79,7 @@ signals:
     void disableTimeToastChanged();
     void closeBtnExitsChanged();
     void singleClickChanged();
+    void hideOnMinimizeChanged();
     void singleClickChangedOverload(bool newValue);
 
     void changeWindowTitle(const QString &windowTitle);
@@ -93,6 +98,7 @@ private:
     bool m_disableTimeToast{};
     bool m_closeBtnExits{};
     bool m_singleClick{};
+    bool m_hideOnMinimize{};
 
     void startCountdown();
 };

@@ -33,6 +33,13 @@ ApplicationWindow {
                    close.accepted = false
                }
 
+    onWindowStateChanged: windowState => {
+                              if (Manager.settings.hideOnMinimize
+                                  && windowState === Qt.WindowMinimized) {
+                                  hide()
+                              }
+                          }
+
     onDarkEnabledChanged: {
         ThemeSetter.darkEnabled = root.darkEnabled
     }
