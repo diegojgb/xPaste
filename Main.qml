@@ -155,7 +155,7 @@ ApplicationWindow {
                         anchors.bottomMargin: 22
                         anchors.horizontalCenter: parent.horizontalCenter
                         darkEnabled: root.darkEnabled
-                        currentIndex: 1
+                        currentIndex: ThemeSetter.darkEnabled ? 1 : 0
 
                         model: ["Light", "Dark"]
 
