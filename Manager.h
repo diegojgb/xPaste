@@ -13,13 +13,15 @@ class Manager : public QObject
     Q_OBJECT
 
     Q_PROPERTY(Settings* settings READ settings CONSTANT)
+    Q_PROPERTY(bool isWindows10 READ isWindows10 CONSTANT)
 
 public:
     explicit Manager(QObject *parent = nullptr);
 
     Settings* settings();
-    void initTrayIcon(QObject* parent, QQuickWindow* root);
+    bool isWindows10() const;
 
+    void initTrayIcon(QObject* parent, QQuickWindow* root);
     void setMainWindow(QQuickWindow *window);
 
 public slots:
@@ -29,6 +31,7 @@ private:
     QQuickWindow* m_mainWindow{};
     Settings m_settings;
     TrayIcon* m_trayIcon{};
+    const bool m_isWindows10;
 };
 
 #endif // MANAGER_H

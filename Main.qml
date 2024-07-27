@@ -20,7 +20,7 @@ ApplicationWindow {
         AboutView
     }
 
-    property int transitionDuration: 250
+    property int transitionDuration: Manager.isWindows10 ? 0 : 250
     property bool darkEnabled: ThemeSetter.darkEnabled
     property int activeView: Main.View.SettingsView
 

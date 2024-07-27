@@ -1,7 +1,7 @@
 #include "Manager.h"
 
 Manager::Manager(QObject *parent)
-    : QObject{parent}
+    : QObject{parent}, m_isWindows10{Utils::isWindows10()}
 {
     connect(&m_settings, &Settings::changeWindowTitle, this, &Manager::onChangeWindowTitle);
 }
@@ -29,4 +29,9 @@ void Manager::setMainWindow(QQuickWindow *window)
 void Manager::onChangeWindowTitle(const QString &windowTitle)
 {
     m_mainWindow->setTitle(windowTitle);
+}
+
+bool Manager::isWindows10() const
+{
+    return m_isWindows10;
 }
