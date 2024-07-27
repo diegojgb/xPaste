@@ -1,7 +1,11 @@
 #ifndef WINDOWTHEMESETTER_H
 #define WINDOWTHEMESETTER_H
 
+#include "Utils.h"
+
 #include <QObject>
+#include <QSettings>
+
 #include <dwmapi.h>
 
 
@@ -24,9 +28,10 @@ signals:
     void darkEnabledChanged();
 
 private:
+    QSettings m_qSettings;
     BOOL m_darkEnabled;
     HWND m_windowHandle = 0;
-    // std::map<BOOL, COLORREF> m_themeToColor;
+    void redraw();
 };
 
 #endif // WINDOWTHEMESETTER_H

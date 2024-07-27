@@ -14,6 +14,19 @@ QString Utils::formatSeconds(int totalSeconds) {
     return time.toString();
 }
 
+bool Utils::isWindows10()
+{
+    RTL_OSVERSIONINFOW osInfo = {0};
+    osInfo.dwOSVersionInfoSize = sizeof(osInfo);
+
+    if (RtlGetVersion(&osInfo) != 0) {
+        std::cerr << "Failed to get OS version information." << std::endl;
+        return false;
+    }
+
+    return osInfo.dwBuildNumber < 22000;
+}
+
 void Utils::errorExit(QString errorStr)
 {
     showCritical(errorStr);

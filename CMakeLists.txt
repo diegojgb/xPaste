@@ -106,6 +106,7 @@ target_link_libraries(appxPasteQT PRIVATE
     Qt6::Widgets
     WinToast
     dwmapi
+    ntdll
 
     SingleApplication::SingleApplication
 )

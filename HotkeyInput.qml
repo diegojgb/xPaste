@@ -28,16 +28,13 @@ TextField {
                    }
     }
 
-    onDarkEnabledChanged: {
-        background.state = control.darkEnabled ? "darkState" : "lightState"
-    }
-
     background: Rectangle {
         id: background
 
         color: palette.base
         border.width: control.activeFocus ? 2 : 1
         radius: 2
+        state: control.darkEnabled ? "darkState" : "lightState"
 
         states: [
             State {

@@ -6,6 +6,12 @@
 #include <QApplication>
 #include <QTime>
 
+#include <iostream>
+#include <Windows.h>
+
+
+// Declare the RtlGetVersion function manually
+extern "C" NTSTATUS NTAPI RtlGetVersion(PRTL_OSVERSIONINFOW lpVersionInformation);
 
 class Utils
 {
@@ -15,6 +21,7 @@ public:
     static void showCritical(QString errorStr);
     static void errorExit(QString errorStr);
     static QString formatSeconds(int totalSeconds);
+    static bool isWindows10();
 };
 
 #endif // UTILS_H

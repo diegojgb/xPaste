@@ -13,7 +13,7 @@ ApplicationWindow {
     maximumHeight: height
     maximumWidth: width
     minimumHeight: height
-    minimumWidth: width
+    minimumWidth: width - 1
 
     enum View {
         SettingsView,
