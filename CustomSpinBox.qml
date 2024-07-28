@@ -119,6 +119,8 @@ SpinBox {
         selectByMouse: control.enabled
         activeFocusOnPress: control.enabled
 
+        onEditingFinished: control.focus = false
+
         Behavior on color {
             ColorAnimation {
                 duration: root.transitionDuration
