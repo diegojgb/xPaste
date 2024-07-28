@@ -145,10 +145,10 @@ LRESULT CALLBACK HookHandler::LowLevelKeyboardProc(int nCode, WPARAM wParam, LPA
         checkModifierRelease(vkCode);
     }
 
-    PostMessage(qtMainWindowHandle, wParam, pKeyboard->vkCode, pKeyboard->flags);
-
-    if (!propagate)
+    if (!propagate) {
+        PostMessage(qtMainWindowHandle, wParam, pKeyboard->vkCode, pKeyboard->flags);
         return 1; // Block the key event from being processed further
+    }
 
     return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
