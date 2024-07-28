@@ -93,7 +93,7 @@ bool HookHandler::checkKeyPress(DWORD vkCode)
     if (g_manager->settings()->toggleActive())
     {
         if (g_manager->settings()->toggleHotkey()->getVkCode() == vkCode
-            && g_manager->settings()->pasteHotkey()->getModifiers() == qModifiers)
+            && g_manager->settings()->toggleHotkey()->getModifiers() == qModifiers)
         {
             QMetaObject::invokeMethod(g_manager->settings(), "togglePasteActive", Qt::QueuedConnection);
             return true;
