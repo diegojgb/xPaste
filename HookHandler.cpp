@@ -132,6 +132,9 @@ LRESULT CALLBACK HookHandler::LowLevelKeyboardProc(int nCode, WPARAM wParam, LPA
     DWORD vkCode = pKeyboard->vkCode;
     bool propagate = true;
 
+    if (pKeyboard->flags & LLKHF_INJECTED)
+        return CallNextHookEx(NULL, nCode, wParam, lParam);
+
     if (wParam == WM_KEYDOWN || wParam == WM_SYSKEYDOWN)
     {
         if (!checkModifierPress(vkCode))

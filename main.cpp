@@ -1,5 +1,4 @@
 #include "HookHandler.h"
-#include "HotkeyEventFilter.h"
 #include "Manager.h"
 #include "Paster.h"
 #include "Settings.h"
