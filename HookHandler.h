@@ -2,6 +2,7 @@
 #define HOOKHANDLER_H
 
 #include <Paster.h>
+#include <Hotkey.h>
 
 #include <QObject>
 #include <QDebug>
@@ -25,10 +26,14 @@ private:
     static HHOOK hKeyboardHook;
     static HWND qtMainWindowHandle;
     static int qModifiers;
+    static DWORD defVkCode;
+    static int defModifiers;
 
     static bool checkModifierPress(DWORD vkCode);
     static bool checkModifierRelease(DWORD vkCode);
     static bool checkKeyPress(DWORD vkCode);
+    static bool areHotkeysEqual(Hotkey *hk1, DWORD vkCode);
+    static bool isDefault(DWORD vkCode);
 
     static LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 };

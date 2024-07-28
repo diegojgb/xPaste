@@ -7,6 +7,8 @@
 HHOOK HookHandler::hKeyboardHook = nullptr;
 HWND HookHandler::qtMainWindowHandle = nullptr;
 int HookHandler::qModifiers = 0;
+int HookHandler::defModifiers = Qt::ControlModifier;
+DWORD HookHandler::defVkCode = 0x56;
 
 
 HookHandler::HookHandler(QObject *parent)
@@ -82,8 +84,14 @@ bool HookHandler::checkKeyPress(DWORD vkCode)
 
     if (g_manager->settings()->pasteActive())
     {
-        if (g_manager->settings()->pasteHotkey()->getVkCode() == vkCode
-            && g_manager->settings()->pasteHotkey()->getModifiers() == qModifiers)
+        if (!g_manager->settings()->customHotkeyEnabled()
+            && isDefault(vkCode))
+        {
+            Paster::pasteClipboard();
+            return true;
+        }
+
+        if (areHotkeysEqual(g_manager->settings()->pasteHotkey(), vkCode))
         {
             Paster::pasteClipboard();
             return true;
@@ -92,8 +100,7 @@ bool HookHandler::checkKeyPress(DWORD vkCode)
 
     if (g_manager->settings()->toggleActive())
     {
-        if (g_manager->settings()->toggleHotkey()->getVkCode() == vkCode
-            && g_manager->settings()->toggleHotkey()->getModifiers() == qModifiers)
+        if (areHotkeysEqual(g_manager->settings()->toggleHotkey(), vkCode))
         {
             QMetaObject::invokeMethod(g_manager->settings(), "togglePasteActive", Qt::QueuedConnection);
             return true;
@@ -101,6 +108,22 @@ bool HookHandler::checkKeyPress(DWORD vkCode)
     }
 
     return false;
+}
+
+bool HookHandler::areHotkeysEqual(Hotkey *hk1, DWORD vkCode)
+{
+    bool isKeyEqual = hk1->getVkCode() == vkCode;
+    bool areModsEqual = hk1->getModifiers() == qModifiers;
+
+    return isKeyEqual && areModsEqual;
+}
+
+bool HookHandler::isDefault(DWORD vkCode)
+{
+    bool isKeyEqual = vkCode == defVkCode;
+    bool areModsEqual = qModifiers == defModifiers;
+
+    return isKeyEqual && areModsEqual;
 }
 
 void HookHandler::installHook()
