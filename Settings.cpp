@@ -3,7 +3,7 @@
 
 Settings::Settings(QObject *parent)
     : QObject{parent}
-    , m_pasteHotkey{this, "PasteHotkey", m_qSettings} // 0x56 == 'V'
+    , m_pasteHotkey{this, "PasteHotkey", m_qSettings}
     , m_toggleHotkey{this, "ToggleHotkey", m_qSettings}
     , m_settingsFile{QApplication::applicationDirPath() + "/config.ini"}
     , m_qSettings{QSettings(m_settingsFile, QSettings::IniFormat)}
