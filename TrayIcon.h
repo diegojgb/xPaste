@@ -16,15 +16,15 @@
 #include <Windows.h>
 
 
-class TrayIcon: public QObject
+class TrayIcon : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit TrayIcon(QObject* parent, QQuickWindow *root, bool singleClick);
+    explicit TrayIcon(QObject *parent, QQuickWindow *root, bool singleClick);
 
 public slots:
-    static void sendNotification(const WinToastTemplate& templ);
+    static void sendNotification(const WinToastTemplate &templ);
     static void sendNotification(const std::wstring title, const std::wstring subtitle, const std::wstring imagePath);
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
     void onSingleClickChanged(bool singleClick);
@@ -37,10 +37,10 @@ signals:
 private:
     QQuickWindow *m_rootWindow{};
     HWND m_hwnd;
-    QSystemTrayIcon* m_trayIcon{};
+    QSystemTrayIcon *m_trayIcon{};
     bool m_singleClick{};
 
-    QMenu* createMenu();
+    QMenu *createMenu();
     void initWinToast();
     void bringToTop();
 };

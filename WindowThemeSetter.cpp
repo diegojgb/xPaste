@@ -17,12 +17,13 @@ WindowThemeSetter::WindowThemeSetter(QObject *parent, BOOL darkEnabled)
 void WindowThemeSetter::updateWindowTheme()
 {
     if (m_windowHandle == 0)
-        if (QWindow* window = QGuiApplication::allWindows().at(0))
+        if (QWindow *window = QGuiApplication::allWindows().at(0))
             m_windowHandle = (HWND)window->winId();
 
-    if (m_windowHandle != 0) {
+    if (m_windowHandle != 0)
+    {
         if (!SUCCEEDED(DwmSetWindowAttribute(m_windowHandle, 20, &m_darkEnabled, sizeof(m_darkEnabled)))) // Windows 10 20H1+
-            DwmSetWindowAttribute(m_windowHandle, 19, &m_darkEnabled, sizeof(m_darkEnabled)); // Windows 10 before 20H1
+            DwmSetWindowAttribute(m_windowHandle, 19, &m_darkEnabled, sizeof(m_darkEnabled));             // Windows 10 before 20H1
     }
 
     if (Utils::isWindows10())

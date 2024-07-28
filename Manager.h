@@ -13,16 +13,16 @@ class Manager : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(Settings* settings READ settings CONSTANT)
+    Q_PROPERTY(Settings *settings READ settings CONSTANT)
     Q_PROPERTY(bool isWindows10 READ isWindows10 CONSTANT)
 
 public:
     explicit Manager(QObject *parent = nullptr);
 
-    Settings* settings();
+    Settings *settings();
     bool isWindows10() const;
 
-    void initTrayIcon(QObject* parent, QQuickWindow* root);
+    void initTrayIcon(QObject *parent, QQuickWindow *root);
     void setMainWindow(QQuickWindow *window);
     bool getPasteHotkeyEditing();
     bool getToggleHotkeyEditing();
@@ -39,13 +39,13 @@ private:
     static bool pasteHotkeyEditing;
     static bool toggleHotkeyEditing;
 
-    QQuickWindow* m_mainWindow{};
+    QQuickWindow *m_mainWindow{};
     Settings m_settings;
-    TrayIcon* m_trayIcon{};
+    TrayIcon *m_trayIcon{};
     HookHandler m_hookHandler;
     const bool m_isWindows10;
 };
 
-extern Manager* g_manager;
+extern Manager *g_manager;
 
 #endif // MANAGER_H

@@ -6,7 +6,8 @@ void Utils::showCritical(QString errorStr)
     QMessageBox::critical(nullptr, "WatchLog", errorStr);
 }
 
-QString Utils::formatSeconds(int totalSeconds) {
+QString Utils::formatSeconds(int totalSeconds)
+{
     QTime time(0, 0, 0);
 
     time = time.addSecs(totalSeconds);
@@ -19,7 +20,8 @@ bool Utils::isWindows10()
     RTL_OSVERSIONINFOW osInfo = {0};
     osInfo.dwOSVersionInfoSize = sizeof(osInfo);
 
-    if (RtlGetVersion(&osInfo) != 0) {
+    if (RtlGetVersion(&osInfo) != 0)
+    {
         std::cerr << "Failed to get OS version information." << std::endl;
         return false;
     }

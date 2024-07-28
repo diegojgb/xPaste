@@ -9,7 +9,7 @@
 #include <dwmapi.h>
 
 
-class WindowThemeSetter: public QObject
+class WindowThemeSetter : public QObject
 {
     Q_OBJECT
 

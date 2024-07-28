@@ -11,7 +11,8 @@ Paster::Paster(QObject *parent)
 void Paster::sendInputString(const std::wstring &str)
 {
     int len = str.length();
-    if (len == 0) return;
+    if (len == 0)
+        return;
 
     int extraSize = g_manager->pressedModsCount();
 
@@ -25,7 +26,7 @@ void Paster::sendInputString(const std::wstring &str)
     int i = 0;
     while (i < len)
     {
-        WORD ch = (WORD) str[i++];
+        WORD ch = (WORD)str[i++];
 
         if ((ch < 0xD800) || (ch > 0xDFFF))
         {
@@ -46,7 +47,7 @@ void Paster::sendInputString(const std::wstring &str)
             ++idx;
 
             in[idx].type = INPUT_KEYBOARD;
-            in[idx].ki.wScan = (WORD) str[i++];
+            in[idx].ki.wScan = (WORD)str[i++];
             in[idx].ki.dwFlags = KEYEVENTF_UNICODE;
             ++idx;
 
@@ -66,18 +67,21 @@ void Paster::sendInputString(const std::wstring &str)
 std::wstring Paster::getClipboardText()
 {
     // Try opening the clipboard
-    if (!OpenClipboard(nullptr)) {
+    if (!OpenClipboard(nullptr))
+    {
         Utils::errorExit("[Paster]: Failed to open clipboard.");
     }
 
     HANDLE hData = GetClipboardData(CF_UNICODETEXT);
-    if (hData == nullptr) {
+    if (hData == nullptr)
+    {
         CloseClipboard();
         Utils::errorExit("[Paster]: Failed to get handle of clipboard object for UNICODE text.");
     }
 
-    wchar_t* pszText = static_cast<wchar_t*>(GlobalLock(hData));
-    if (pszText == nullptr) {
+    wchar_t *pszText = static_cast<wchar_t *>(GlobalLock(hData));
+    if (pszText == nullptr)
+    {
         CloseClipboard();
         Utils::errorExit("[Paster]: Error while locking the handle to get the actual text pointer.");
     }
@@ -98,7 +102,7 @@ void Paster::pasteClipboard()
 // Excluding the WIN modifier.
 void Paster::addModifiersRelease(std::vector<INPUT> &in, int &idx)
 {
-    Manager* manager = g_manager;
+    Manager *manager = g_manager;
     int modifiers = manager->getQModifiers();
 
     if ((modifiers & Qt::ControlModifier) != 0)

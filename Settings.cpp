@@ -22,7 +22,7 @@ Settings::Settings(QObject *parent)
     connect(&m_timer, &QTimer::timeout, this, &Settings::timerUpdateTitle);
 }
 
-Hotkey* Settings::pasteHotkey()
+Hotkey *Settings::pasteHotkey()
 {
     return &m_pasteHotkey;
 }
@@ -33,7 +33,7 @@ Hotkey *Settings::toggleHotkey()
 }
 
 void Settings::togglePasteActive()
-{   
+{
     setPasteActive(!m_pasteActive);
 
     if (m_disableToggleToasts)
@@ -66,7 +66,7 @@ void Settings::timerUpdateTitle()
         if (!m_disableTimeToast)
             TrayIcon::sendNotification(L"Time's up!",
                                        L"Simulated pasting is now turned off.",
-                                        QCoreApplication::applicationDirPath().toStdWString() + L"/assets/red-cross.png");
+                                       QCoreApplication::applicationDirPath().toStdWString() + L"/assets/red-cross.png");
     }
     else if (m_remainingTime == -3)
     {

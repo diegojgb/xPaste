@@ -1,6 +1,7 @@
 #include "Registry.h"
 
-bool Registry::createRegistryKey(HKEY hKeyParent, LPCTSTR subkey) {
+bool Registry::createRegistryKey(HKEY hKeyParent, LPCTSTR subkey)
+{
     DWORD dwDisposition; // Verify if a new key is created or an existing key is opened
     HKEY  hKey;
     DWORD Ret;
@@ -19,7 +20,7 @@ bool Registry::createRegistryKey(HKEY hKeyParent, LPCTSTR subkey) {
     if (Ret != ERROR_SUCCESS)
         return false;
 
-    RegCloseKey(hKey); //close the key
+    RegCloseKey(hKey); // close the key
     return true;
 }
 
@@ -36,7 +37,8 @@ bool Registry::writeStringInRegistry(HKEY hKeyParent, LPCTSTR subkey, LPCTSTR va
               &hKey);
 
     // Check if the registry key exists
-    if (Ret == ERROR_SUCCESS) {
+    if (Ret == ERROR_SUCCESS)
+    {
         auto result = RegSetValueEx(
                         hKey,
                         valueName,
@@ -45,7 +47,8 @@ bool Registry::writeStringInRegistry(HKEY hKeyParent, LPCTSTR subkey, LPCTSTR va
                         (LPBYTE)strData,
                         (_tcslen(strData)+1) * sizeof(TCHAR));
 
-        if (ERROR_SUCCESS != result) {
+        if (ERROR_SUCCESS != result)
+        {
             RegCloseKey(hKey);
             return false;
         }

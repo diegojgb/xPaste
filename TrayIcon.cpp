@@ -45,10 +45,13 @@ void TrayIcon::onSingleClickChanged(bool singleClick)
     if (m_singleClick == singleClick)
         return;
 
-    if (singleClick) {
+    if (singleClick)
+    {
         disconnect(this, &TrayIcon::doubleClicked, this, &TrayIcon::showWindow);
         connect(this, &TrayIcon::singleClicked, this, &TrayIcon::showWindow);
-    } else {
+    }
+    else
+    {
         disconnect(this, &TrayIcon::singleClicked, this, &TrayIcon::showWindow);
         connect(this, &TrayIcon::doubleClicked, this, &TrayIcon::showWindow);
     }
@@ -62,15 +65,15 @@ void TrayIcon::showWindow()
     bringToTop();
 }
 
-QMenu* TrayIcon::createMenu()
+QMenu *TrayIcon::createMenu()
 {
-    QAction* restoreAction = new QAction(QObject::tr("&Restore"), m_rootWindow);
+    QAction *restoreAction = new QAction(QObject::tr("&Restore"), m_rootWindow);
     connect(restoreAction, &QAction::triggered, this, &TrayIcon::showWindow);
 
-    QAction* quitAction = new QAction(QObject::tr("&Quit"), m_rootWindow);
+    QAction *quitAction = new QAction(QObject::tr("&Quit"), m_rootWindow);
     connect(quitAction, &QAction::triggered, qApp, &QCoreApplication::quit);
 
-    QMenu* trayIconMenu = new QMenu();
+    QMenu *trayIconMenu = new QMenu();
     trayIconMenu->addAction(restoreAction);
     trayIconMenu->addAction(quitAction);
 
@@ -88,7 +91,8 @@ void TrayIcon::initWinToast()
     WinToast::instance()->setShortcutPolicy(WinToast::ShortcutPolicy::SHORTCUT_POLICY_IGNORE);
 
     // Add icon and name to registry, so Windows can display them in toast notifications.
-    if (!Registry::createRegistryKey(HKEY_CURRENT_USER, L"Software\\Classes\\AppUserModelId\\diegojgb.xPaste.ToastNotifications")) {
+    if (!Registry::createRegistryKey(HKEY_CURRENT_USER, L"Software\\Classes\\AppUserModelId\\diegojgb.xPaste.ToastNotifications"))
+    {
         Utils::errorExit("[Registry]: Error opening or creating new Registry key");
     }
 
@@ -96,7 +100,8 @@ void TrayIcon::initWinToast()
             HKEY_CURRENT_USER,
             L"Software\\Classes\\AppUserModelId\\diegojgb.xPaste.ToastNotifications",
             L"DisplayName",
-            L"xPaste")) {
+            L"xPaste"))
+    {
         Utils::errorExit("[Registry]: Error saving toast DisplayName Regitry value");
     }
 
@@ -106,7 +111,8 @@ void TrayIcon::initWinToast()
             HKEY_CURRENT_USER,
             L"Software\\Classes\\AppUserModelId\\diegojgb.xPaste.ToastNotifications",
             L"IconUri",
-            defaultIcon.toStdWString().c_str())) {
+            defaultIcon.toStdWString().c_str()))
+    {
         Utils::errorExit("[Registry]: Error saving toast IconUri Regitry value");
     }
 
@@ -114,9 +120,10 @@ void TrayIcon::initWinToast()
         Utils::errorExit("[WinToast]: Error, could not initialize WinToast!");
 }
 
-void TrayIcon::sendNotification(const WinToastTemplate& templ)
+void TrayIcon::sendNotification(const WinToastTemplate &templ)
 {
-    if (WinToast::instance()->showToast(templ, new ToastHandler()) < 0) {
+    if (WinToast::instance()->showToast(templ, new ToastHandler()) < 0)
+    {
         Utils::errorExit("[WinToast]: Could not launch your toast notification!");
     }
 }

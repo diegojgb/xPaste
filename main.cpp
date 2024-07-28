@@ -15,11 +15,11 @@
 #include <SingleApplication.h>
 #include <dwmapi.h>
 
-
-bool isDark(Qt::ColorScheme colorScheme) {
-    if (colorScheme == Qt::ColorScheme::Light) {
+bool isDark(Qt::ColorScheme colorScheme)
+{
+    if (colorScheme == Qt::ColorScheme::Light)
         return false;
-    } else
+    else
         return true;
 }
 
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
         return -1;
 
     QObject *root = engine.rootObjects().at(0);
-    QQuickWindow *mainWindow = qobject_cast<QQuickWindow*>(root);
+    QQuickWindow *mainWindow = qobject_cast<QQuickWindow *>(root);
     HookHandler::setMainWindowHandle((HWND)mainWindow->winId());
 
     manager->initTrayIcon(&app, mainWindow);

@@ -17,8 +17,8 @@ class Settings : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(Hotkey* pasteHotkey READ pasteHotkey CONSTANT FINAL)
-    Q_PROPERTY(Hotkey* toggleHotkey READ toggleHotkey CONSTANT FINAL)
+    Q_PROPERTY(Hotkey *pasteHotkey READ pasteHotkey CONSTANT FINAL)
+    Q_PROPERTY(Hotkey *toggleHotkey READ toggleHotkey CONSTANT FINAL)
     Q_PROPERTY(bool pasteActive READ pasteActive WRITE setPasteActive NOTIFY pasteActiveChanged FINAL)
     Q_PROPERTY(bool toggleActive READ toggleActive WRITE setToggleActive NOTIFY toggleActiveChanged FINAL)
     Q_PROPERTY(bool customHotkeyEnabled READ customHotkeyEnabled WRITE setCustomHotkeyEnabled NOTIFY customHotkeyEnabledChanged FINAL)
@@ -37,8 +37,8 @@ public:
     bool pasteActive() const;
     void setPasteActive(bool newPasteActive);
 
-    Hotkey* pasteHotkey();
-    Hotkey* toggleHotkey();
+    Hotkey *pasteHotkey();
+    Hotkey *toggleHotkey();
 
     bool toggleActive() const;
     void setToggleActive(bool newToggleActive);

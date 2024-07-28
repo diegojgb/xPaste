@@ -10,14 +10,14 @@ int HookHandler::qModifiers = 0;
 int HookHandler::defModifiers = Qt::ControlModifier;
 DWORD HookHandler::defVkCode = 0x56;
 
-
 HookHandler::HookHandler(QObject *parent)
     : QObject{parent}
 {}
 
 bool HookHandler::checkModifierPress(DWORD vkCode)
 {
-    switch (vkCode) {
+    switch (vkCode)
+    {
         case VK_CONTROL:
         case VK_LCONTROL:
         case VK_RCONTROL:
@@ -44,7 +44,8 @@ bool HookHandler::checkModifierPress(DWORD vkCode)
 
 bool HookHandler::checkModifierRelease(DWORD vkCode)
 {
-    switch (vkCode) {
+    switch (vkCode)
+    {
         case VK_CONTROL:
         case VK_LCONTROL:
         case VK_RCONTROL:
@@ -133,7 +134,8 @@ void HookHandler::installHook()
 
 void HookHandler::uninstallHook()
 {
-    if (hKeyboardHook) {
+    if (hKeyboardHook)
+    {
         UnhookWindowsHookEx(hKeyboardHook);
         hKeyboardHook = nullptr;
     }
@@ -151,7 +153,7 @@ int HookHandler::getModifiers()
 
 LRESULT CALLBACK HookHandler::LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-    KBDLLHOOKSTRUCT *pKeyboard = (KBDLLHOOKSTRUCT*) lParam;
+    KBDLLHOOKSTRUCT *pKeyboard = (KBDLLHOOKSTRUCT *)lParam;
     DWORD vkCode = pKeyboard->vkCode;
     bool propagate = true;
 
@@ -168,7 +170,8 @@ LRESULT CALLBACK HookHandler::LowLevelKeyboardProc(int nCode, WPARAM wParam, LPA
         checkModifierRelease(vkCode);
     }
 
-    if (!propagate) {
+    if (!propagate)
+    {
         PostMessage(qtMainWindowHandle, wParam, pKeyboard->vkCode, pKeyboard->flags);
         return 1; // Block the key event from being processed further
     }
