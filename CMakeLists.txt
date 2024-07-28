@@ -66,6 +66,7 @@ qt_add_qml_module(appxPasteQT
         ToastHandler.h
         Registry.h Registry.cpp
         Manager.h Manager.cpp
+        HookHandler.h HookHandler.cpp
 
     RESOURCES
         assets/light/about.png

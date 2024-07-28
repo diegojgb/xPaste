@@ -90,11 +90,11 @@ ColumnLayout {
                 Layout.preferredHeight: 25
                 disabled: !paste_hotkey_checkbox.checked
 
+                onActiveFocusChanged: Manager.setPasteHotkeyEditing(activeFocus)
+
                 Keys.onPressed: event => {
-                                    Manager.settings.pasteHotkey.setHotkey(
-                                        event.key, event.modifiers,
-                                        event.nativeScanCode,
-                                        Manager.settings.pasteActive)
+                                    Manager.settings.pasteHotkey.setQKey(
+                                        event.key, Manager.getQModifiers())
                                 }
             }
         }
@@ -119,10 +119,11 @@ ColumnLayout {
                 Layout.preferredHeight: 25
                 disabled: !toggle_hotkey_checkbox.checked
 
+                onActiveFocusChanged: Manager.setToggleHotkeyEditing(activeFocus)
+
                 Keys.onPressed: event => {
-                                    Manager.settings.toggleHotkey.setHotkey(
-                                        event.key, event.modifiers,
-                                        event.nativeScanCode, true)
+                                    Manager.settings.toggleHotkey.setQKey(
+                                        event.key, Manager.getQModifiers())
                                 }
             }
         }

@@ -1,3 +1,4 @@
+#include "HookHandler.h"
 #include "HotkeyEventFilter.h"
 #include "Manager.h"
 #include "Paster.h"
@@ -39,6 +40,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     auto *manager = new Manager(&app);
+    g_manager = manager;
 
     engine.rootContext()->setContextProperty("Manager", manager);
     engine.rootContext()->setContextProperty("ThemeSetter", themeSetter);
@@ -57,16 +59,11 @@ int main(int argc, char *argv[])
 
     QObject *root = engine.rootObjects().at(0);
     QQuickWindow *mainWindow = qobject_cast<QQuickWindow*>(root);
+    HookHandler::setMainWindowHandle((HWND)mainWindow->winId());
 
     manager->initTrayIcon(&app, mainWindow);
     manager->setMainWindow(mainWindow);
 
-    // Add a filter/listener for global hotkey events.
-    auto* eventFilter = new HotkeyEventFilter();
-    app.installNativeEventFilter(eventFilter);
-
-    QObject::connect(eventFilter, &HotkeyEventFilter::pasteHotkeyActivated, Paster::pasteClipboard);
-    QObject::connect(eventFilter, &HotkeyEventFilter::toggleHotkeyActivated, manager->settings(), &Settings::togglePasteActive);
     QObject::connect(&app, &SingleApplication::instanceStarted, mainWindow, &QWindow::showNormal);
     QObject::connect(&app, &SingleApplication::instanceStarted, mainWindow, [mainWindow]() {
         SetForegroundWindow((HWND)mainWindow->winId());

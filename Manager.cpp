@@ -1,8 +1,15 @@
 #include "Manager.h"
 
+Manager* g_manager = nullptr;
+bool Manager::pasteHotkeyEditing = false;
+bool Manager::toggleHotkeyEditing = false;
+
 Manager::Manager(QObject *parent)
-    : QObject{parent}, m_isWindows10{Utils::isWindows10()}
+    : QObject{parent}
+    , m_isWindows10{Utils::isWindows10()}
+    , m_hookHandler{this}
 {
+    m_hookHandler.installHook();
     connect(&m_settings, &Settings::changeWindowTitle, this, &Manager::onChangeWindowTitle);
 }
 
@@ -24,6 +31,45 @@ void Manager::initTrayIcon(QObject *parent, QQuickWindow *rootWindow)
 void Manager::setMainWindow(QQuickWindow *window)
 {
     m_mainWindow = window;
+}
+
+bool Manager::getPasteHotkeyEditing()
+{
+    return pasteHotkeyEditing;
+}
+
+bool Manager::getToggleHotkeyEditing()
+{
+    return toggleHotkeyEditing;
+}
+
+// Excluding the WIN modifier.
+int Manager::pressedModsCount()
+{
+    int count = 0;
+    int modifiers = m_hookHandler.getModifiers() & (Qt::ControlModifier | Qt::ShiftModifier | Qt::AltModifier);
+
+    while (modifiers) {
+        count += modifiers & 1;
+        modifiers >>= 1;
+    }
+
+    return count;
+}
+
+void Manager::setPasteHotkeyEditing(bool editing)
+{
+    pasteHotkeyEditing = editing;
+}
+
+void Manager::setToggleHotkeyEditing(bool editing)
+{
+    toggleHotkeyEditing = editing;
+}
+
+int Manager::getQModifiers()
+{
+    return m_hookHandler.getModifiers();
 }
 
 void Manager::onChangeWindowTitle(const QString &windowTitle)

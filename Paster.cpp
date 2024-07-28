@@ -1,4 +1,6 @@
 #include "Paster.h"
+#include "Manager.h"
+
 
 Paster::Paster(QObject *parent)
     : QObject{parent}
@@ -11,10 +13,16 @@ void Paster::sendInputString(const std::wstring &str)
     int len = str.length();
     if (len == 0) return;
 
-    std::vector<INPUT> in(len*2);
+    int extraSize = g_manager->pressedModsCount();
+
+    std::vector<INPUT> in(len*2 + extraSize);
     ZeroMemory(&in[0], in.size()*sizeof(INPUT));
 
-    int i = 0, idx = 0;
+    int idx = 0;
+
+    addModifiersRelease(in, idx);
+
+    int i = 0;
     while (i < len)
     {
         WORD ch = (WORD) str[i++];
@@ -85,4 +93,42 @@ std::wstring Paster::getClipboardText()
 void Paster::pasteClipboard()
 {
     sendInputString(getClipboardText());
+}
+
+// Excluding the WIN modifier.
+void Paster::addModifiersRelease(std::vector<INPUT> &in, int &idx)
+{
+    Manager* manager = g_manager;
+    int modifiers = manager->getQModifiers();
+
+    if ((modifiers & Qt::ControlModifier) != 0)
+        addCtrlRelease(in, idx);
+    if ((modifiers & Qt::ShiftModifier) != 0)
+        addShiftRelease(in, idx);
+    if ((modifiers & Qt::AltModifier) != 0)
+        addAltRelease(in, idx);
+}
+
+void Paster::addCtrlRelease(std::vector<INPUT> &in, int &idx)
+{
+    in[idx].type = INPUT_KEYBOARD;
+    in[idx].ki.wVk = VK_CONTROL;
+    in[idx].ki.dwFlags = KEYEVENTF_KEYUP;
+    ++idx;
+}
+
+void Paster::addShiftRelease(std::vector<INPUT> &in, int &idx)
+{
+    in[idx].type = INPUT_KEYBOARD;
+    in[idx].ki.wVk = VK_SHIFT;
+    in[idx].ki.dwFlags = KEYEVENTF_KEYUP;
+    ++idx;
+}
+
+void Paster::addAltRelease(std::vector<INPUT> &in, int &idx)
+{
+    in[idx].type = INPUT_KEYBOARD;
+    in[idx].ki.wVk = VK_MENU;
+    in[idx].ki.dwFlags = KEYEVENTF_KEYUP;
+    ++idx;
 }

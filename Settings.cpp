@@ -3,8 +3,8 @@
 
 Settings::Settings(QObject *parent)
     : QObject{parent}
-    , m_pasteHotkey{this, "PasteHotkey", Hotkey::PasteHotkeyID, m_qSettings, 0x56, MOD_CONTROL} // 0x56 == 'V'
-    , m_toggleHotkey{this, "ToggleHotkey", Hotkey::ToggleHotkeyID, m_qSettings}
+    , m_pasteHotkey{this, "PasteHotkey", m_qSettings} // 0x56 == 'V'
+    , m_toggleHotkey{this, "ToggleHotkey", m_qSettings}
     , m_settingsFile{QApplication::applicationDirPath() + "/config.ini"}
     , m_qSettings{QSettings(m_settingsFile, QSettings::IniFormat)}
     , m_pasteActive{m_qSettings.value("PasteActive", false).toBool()}
@@ -98,13 +98,6 @@ void Settings::setPasteActive(bool newPasteActive)
 
     m_pasteActive = newPasteActive;
 
-    bool registerDefault = !m_customHotkeyEnabled;
-
-    if (newPasteActive)
-        m_pasteHotkey.registerHotkey(registerDefault);
-    else
-        m_pasteHotkey.unregisterHotkey();
-
     if (newPasteActive && m_autoDisable)
         startCountdown();
 
@@ -125,11 +118,6 @@ void Settings::setToggleActive(bool newToggleActive)
 
     m_toggleActive = newToggleActive;
 
-    if (newToggleActive)
-        m_toggleHotkey.registerHotkey();
-    else
-        m_toggleHotkey.unregisterHotkey();
-
     m_qSettings.setValue("ToggleActive", newToggleActive);
 
     emit toggleActiveChanged();
@@ -146,20 +134,6 @@ void Settings::setCustomHotkeyEnabled(bool newCustomHotkeyEnabled)
         return;
 
     m_customHotkeyEnabled = newCustomHotkeyEnabled;
-
-    if (newCustomHotkeyEnabled) {
-        if (m_pasteActive) {
-            m_pasteHotkey.unregisterHotkey();
-
-            if (!m_pasteHotkey.isEmpty())
-                m_pasteHotkey.registerHotkey();
-        }
-    } else {
-        if (m_pasteActive) {
-            m_pasteHotkey.unregisterHotkey();
-            m_pasteHotkey.registerDefault();
-        }
-    }
 
     m_qSettings.setValue("CustomHotkeyEnabled", newCustomHotkeyEnabled);
 
