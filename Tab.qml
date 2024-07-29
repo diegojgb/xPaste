@@ -6,8 +6,8 @@ TabButton {
     id: control
 
     required property bool darkEnabled
-    property string light_image
-    property string dark_image
+    property string lightImage
+    property string darkImage
     property alias contentAnchors: content.anchors
 
     checkable: true
@@ -83,35 +83,35 @@ TabButton {
             height: childrenRect.height
 
             Image {
-                id: darkImage
-                source: control.dark_image
+                id: darkImageItem
+                source: control.darkImage
             }
 
             Image {
-                id: lightImage
-                source: control.light_image
+                id: lightImageItem
+                source: control.lightImage
             }
 
             states: [
                 State {
                     name: "fadeInLightImage"
                     PropertyChanges {
-                        target: darkImage
+                        target: darkImageItem
                         opacity: 0
                     }
                     PropertyChanges {
-                        target: lightImage
+                        target: lightImageItem
                         opacity: 1
                     }
                 },
                 State {
                     name: "fadeInDarkImage"
                     PropertyChanges {
-                        target: darkImage
+                        target: darkImageItem
                         opacity: 1
                     }
                     PropertyChanges {
-                        target: lightImage
+                        target: lightImageItem
                         opacity: 0
                     }
                 }

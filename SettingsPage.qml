@@ -58,7 +58,6 @@ ColumnLayout {
         }
     }
 
-    // Clipboard hook settings
     LabelSeparator {
         Layout.topMargin: 18
         text: 'Clipboard hook settings'
@@ -74,7 +73,7 @@ ColumnLayout {
             spacing: 6
 
             CustomCheckbox {
-                id: paste_hotkey_checkbox
+                id: pasteHotkeyCheckbox
                 text: "Setup a custom paste hotkey"
                 darkEnabled: root.darkEnabled
                 checked: Manager.settings.customHotkeyEnabled
@@ -88,7 +87,7 @@ ColumnLayout {
                 Layout.topMargin: 1
                 Layout.preferredWidth: 120
                 Layout.preferredHeight: 25
-                disabled: !paste_hotkey_checkbox.checked
+                disabled: !pasteHotkeyCheckbox.checked
 
                 onActiveFocusChanged: Manager.setPasteHotkeyEditing(activeFocus)
 
@@ -103,7 +102,7 @@ ColumnLayout {
             spacing: 6
 
             CustomCheckbox {
-                id: toggle_hotkey_checkbox
+                id: toggleHotkeyCheckbox
                 text: "Setup a hotkey for toggling the hook"
                 darkEnabled: root.darkEnabled
                 checked: Manager.settings.toggleActive
@@ -117,7 +116,7 @@ ColumnLayout {
                 Layout.topMargin: 1
                 Layout.preferredWidth: 120
                 Layout.preferredHeight: 25
-                disabled: !toggle_hotkey_checkbox.checked
+                disabled: !toggleHotkeyCheckbox.checked
 
                 onActiveFocusChanged: Manager.setToggleHotkeyEditing(activeFocus)
 
@@ -132,7 +131,7 @@ ColumnLayout {
             Layout.leftMargin: 25
             text: "Disable on/off notifications."
             darkEnabled: root.darkEnabled
-            disabled: !toggle_hotkey_checkbox.checked
+            disabled: !toggleHotkeyCheckbox.checked
             checked: Manager.settings.disableToggleToasts
 
             onCheckedChanged: Manager.settings.disableToggleToasts = checked
@@ -143,7 +142,7 @@ ColumnLayout {
             Layout.topMargin: 5
 
             CustomCheckbox {
-                id: time_checkbox
+                id: timeCheckbox
                 text: "Automatically disable the hook after"
                 darkEnabled: root.darkEnabled
                 checked: Manager.settings.autoDisable
@@ -154,8 +153,8 @@ ColumnLayout {
             CustomSpinBox {
                 Layout.preferredWidth: 120
                 darkEnabled: root.darkEnabled
-                enabled: time_checkbox.checked
-                editable: time_checkbox.checked
+                enabled: timeCheckbox.checked
+                editable: timeCheckbox.checked
                 value: Manager.settings.autoDisableSeconds
 
                 onValueChanged: Manager.settings.autoDisableSeconds = value
@@ -166,7 +165,7 @@ ColumnLayout {
             Layout.leftMargin: 25
             text: "Disable \"Time's up\" notification."
             darkEnabled: root.darkEnabled
-            disabled: !time_checkbox.checked
+            disabled: !timeCheckbox.checked
             checked: Manager.settings.disableTimeToast
 
             onCheckedChanged: Manager.settings.disableTimeToast = checked

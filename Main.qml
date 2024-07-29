@@ -88,7 +88,7 @@ ApplicationWindow {
                 spacing: 0
 
                 Rectangle {
-                    id: on_off_switch
+                    id: pasteActiveSwitch
 
                     property bool checked: Manager.settings.pasteActive
 
@@ -116,7 +116,7 @@ ApplicationWindow {
                             anchors.fill: parent
 
                             onClicked: {
-                                on_off_switch.checked = !on_off_switch.checked
+                                pasteActiveSwitch.checked = !pasteActiveSwitch.checked
                                 forceActiveFocus()
                             }
                         }
@@ -128,8 +128,8 @@ ApplicationWindow {
                     Layout.preferredHeight: 48
                     text: 'Settings'
                     darkEnabled: root.darkEnabled
-                    dark_image: "assets/dark/settings.png"
-                    light_image: "assets/light/settings.png"
+                    darkImage: "assets/dark/settings.png"
+                    lightImage: "assets/light/settings.png"
                     checked: true
 
                     onClicked: root.activeView = Main.View.SettingsView
@@ -140,8 +140,8 @@ ApplicationWindow {
                     Layout.preferredHeight: 48
                     text: 'About'
                     darkEnabled: root.darkEnabled
-                    dark_image: "assets/dark/about.png"
-                    light_image: "assets/light/about.png"
+                    darkImage: "assets/dark/about.png"
+                    lightImage: "assets/light/about.png"
 
                     onClicked: root.activeView = Main.View.AboutView
                 }
