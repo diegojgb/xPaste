@@ -5,7 +5,6 @@
 
 #include <QObject>
 #include <QKeySequence>
-#include <QDebug>
 #include <QSettings>
 
 #include <iostream>

@@ -1,11 +1,10 @@
 #ifndef HOOKHANDLER_H
 #define HOOKHANDLER_H
 
-#include <Paster.h>
-#include <Hotkey.h>
+#include "Paster.h"
+#include "Hotkey.h"
 
 #include <QObject>
-#include <QDebug>
 
 #include <Windows.h>
 

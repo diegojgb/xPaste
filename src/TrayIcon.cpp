@@ -13,7 +13,7 @@ TrayIcon::TrayIcon(QObject *parent, QQuickWindow *rootWindow, bool singleClick)
     QMenu *trayIconMenu = createMenu();
 
     m_trayIcon->setContextMenu(trayIconMenu);
-    m_trayIcon->setIcon(QIcon(":/qt/qml/xPasteQT/assets/xpaste-logo.ico"));
+    m_trayIcon->setIcon(QIcon(":/qt/qml/xPaste/assets/xpaste-logo.ico"));
     m_trayIcon->setToolTip("xPaste");
     m_trayIcon->show();
 

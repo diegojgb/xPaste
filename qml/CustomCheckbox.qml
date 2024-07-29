@@ -30,19 +30,19 @@ Item {
                 source: {
                     if (control.checked) {
                         if (control.disabled) {
-                            return 'assets/dark/check-disabled.png'
+                            return 'qrc:/qt/qml/xPaste/assets/dark/check-disabled.png'
                         } else if (mouseArea.containsMouse) {
-                            return 'assets/dark/check-hover.png'
+                            return 'qrc:/qt/qml/xPaste/assets/dark/check-hover.png'
                         } else {
-                            return 'assets/dark/check-accent.png'
+                            return 'qrc:/qt/qml/xPaste/assets/dark/check-accent.png'
                         }
                     } else {
                         if (control.disabled) {
-                            return 'assets/dark/box-disabled.png'
+                            return 'qrc:/qt/qml/xPaste/assets/dark/box-disabled.png'
                         } else if (mouseArea.containsMouse) {
-                            return 'assets/dark/box-hover.png'
+                            return 'qrc:/qt/qml/xPaste/assets/dark/box-hover.png'
                         } else {
-                            return 'assets/dark/box-basic.png'
+                            return 'qrc:/qt/qml/xPaste/assets/dark/box-basic.png'
                         }
                     }
                 }
@@ -54,19 +54,19 @@ Item {
                 source: {
                     if (control.checked) {
                         if (control.disabled) {
-                            return 'assets/light/check-disabled.png'
+                            return 'qrc:/qt/qml/xPaste/assets/light/check-disabled.png'
                         } else if (mouseArea.containsMouse) {
-                            return 'assets/light/check-hover.png'
+                            return 'qrc:/qt/qml/xPaste/assets/light/check-hover.png'
                         } else {
-                            return 'assets/light/check-accent.png'
+                            return 'qrc:/qt/qml/xPaste/assets/light/check-accent.png'
                         }
                     } else {
                         if (control.disabled) {
-                            return 'assets/light/box-disabled.png'
+                            return 'qrc:/qt/qml/xPaste/assets/light/box-disabled.png'
                         } else if (mouseArea.containsMouse) {
-                            return 'assets/light/box-hover.png'
+                            return 'qrc:/qt/qml/xPaste/assets/light/box-hover.png'
                         } else {
-                            return 'assets/light/box-basic.png'
+                            return 'qrc:/qt/qml/xPaste/assets/light/box-basic.png'
                         }
                     }
                 }

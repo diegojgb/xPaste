@@ -6,7 +6,6 @@
 #include "Utils.h"
 
 #include <QObject>
-#include <QDebug>
 #include <QTimer>
 #include <QSettings>
 

@@ -107,11 +107,13 @@ ApplicationWindow {
                     }
 
                     Image {
-                        source: Manager.settings.pasteActive ? 'assets/on-switch.png' : 'assets/off-switch.png'
+                        source: Manager.settings.pasteActive
+                                ? 'qrc:/qt/qml/xPaste/assets/on-switch.png'
+                                : 'qrc:/qt/qml/xPaste/assets/off-switch.png'
                         anchors.centerIn: parent
 
                         MouseArea {
-                            id: switch_mouseArea
+                            id: switchMouseArea
 
                             anchors.fill: parent
 
@@ -128,8 +130,8 @@ ApplicationWindow {
                     Layout.preferredHeight: 48
                     text: 'Settings'
                     darkEnabled: root.darkEnabled
-                    darkImage: "assets/dark/settings.png"
-                    lightImage: "assets/light/settings.png"
+                    darkImage: "qrc:/qt/qml/xPaste/assets/dark/settings.png"
+                    lightImage: "qrc:/qt/qml/xPaste/assets/light/settings.png"
                     checked: true
 
                     onClicked: root.activeView = Main.View.SettingsView
@@ -140,8 +142,8 @@ ApplicationWindow {
                     Layout.preferredHeight: 48
                     text: 'About'
                     darkEnabled: root.darkEnabled
-                    darkImage: "assets/dark/about.png"
-                    lightImage: "assets/light/about.png"
+                    darkImage: "qrc:/qt/qml/xPaste/assets/dark/about.png"
+                    lightImage: "qrc:/qt/qml/xPaste/assets/light/about.png"
 
                     onClicked: root.activeView = Main.View.AboutView
                 }

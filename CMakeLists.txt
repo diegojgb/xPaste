@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-project(xPasteQT LANGUAGES CXX)
+project(xPaste LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
@@ -25,40 +25,49 @@ qt_standard_project_setup()
 
 add_subdirectory(WinToast)
 
-qt_add_executable(appxPasteQT
-    main.cpp
+qt_add_executable(appxPaste
+    src/main.cpp
     assets/xpaste.rc  # icon resource.
     assets/version.rc
 )
 
 qt_policy(SET QTP0001 NEW)
 
-qt_add_qml_module(appxPasteQT
-    URI xPasteQT
+qt_add_qml_module(appxPaste
+    URI xPaste
     VERSION 1.0
 
     QML_FILES
-        Tab.qml
-        Main.qml
-        LabelSeparator.qml
-        CustomCheckbox.qml
-        HotkeyInput.qml
-        CustomComboBox.qml
-        CustomSpinBox.qml
-        SettingsPage.qml
-        AboutPage.qml
+        qml/Tab.qml
+        qml/Main.qml
+        qml/LabelSeparator.qml
+        qml/CustomCheckbox.qml
+        qml/HotkeyInput.qml
+        qml/CustomComboBox.qml
+        qml/CustomSpinBox.qml
+        qml/SettingsPage.qml
+        qml/AboutPage.qml
 
     SOURCES
-        WindowThemeSetter.h WindowThemeSetter.cpp
-        Settings.h Settings.cpp
-        Hotkey.h Hotkey.cpp
-        Paster.h Paster.cpp
-        Utils.h Utils.cpp
-        TrayIcon.h TrayIcon.cpp
-        ToastHandler.h
-        Registry.h Registry.cpp
-        Manager.h Manager.cpp
-        HookHandler.h HookHandler.cpp
+        src/WindowThemeSetter.h
+        src/WindowThemeSetter.cpp
+        src/Settings.h
+        src/Settings.cpp
+        src/Hotkey.h
+        src/Hotkey.cpp
+        src/Paster.h
+        src/Paster.cpp
+        src/Utils.h
+        src/Utils.cpp
+        src/TrayIcon.h
+        src/TrayIcon.cpp
+        src/ToastHandler.h
+        src/Registry.h
+        src/Registry.cpp
+        src/Manager.h
+        src/Manager.cpp
+        src/HookHandler.h
+        src/HookHandler.cpp
 
     RESOURCES
         assets/light/about.png
@@ -88,12 +97,12 @@ qt_add_qml_module(appxPasteQT
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
-set_target_properties(appxPasteQT PROPERTIES
+set_target_properties(appxPaste PROPERTIES
     WIN32_EXECUTABLE TRUE
     OUTPUT_NAME "xPaste"
 )
 
-target_link_libraries(appxPasteQT PRIVATE
+target_link_libraries(appxPaste PRIVATE
     Qt6::Quick
     Qt6::QuickControls2
     Qt6::Widgets
@@ -105,7 +114,7 @@ target_link_libraries(appxPasteQT PRIVATE
 )
 
 include(GNUInstallDirs)
-install(TARGETS appxPasteQT
+install(TARGETS appxPaste
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

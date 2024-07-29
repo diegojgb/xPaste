@@ -9,7 +9,7 @@ ColumnLayout {
         spacing: 10
 
         Image {
-            source: 'assets/xpaste-logo.png'
+            source: 'qrc:/qt/qml/xPaste/assets/xpaste-logo.png'
             anchors.verticalCenter: parent.verticalCenter
         }
 

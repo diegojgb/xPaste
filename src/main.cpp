@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("Manager", manager);
     engine.rootContext()->setContextProperty("ThemeSetter", themeSetter);
 
-    const QUrl url(u"qrc:/qt/qml/xPasteQT/Main.qml"_qs);
+    const QUrl url(u"qrc:/qt/qml/xPaste/qml/Main.qml"_qs);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
