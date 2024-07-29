@@ -13,7 +13,7 @@ TrayIcon::TrayIcon(QObject *parent, QQuickWindow *rootWindow, bool singleClick)
     QMenu *trayIconMenu = createMenu();
 
     m_trayIcon->setContextMenu(trayIconMenu);
-    m_trayIcon->setIcon(QIcon(":/qt/qml/xPasteQT/assets/xpaste_logo.ico"));
+    m_trayIcon->setIcon(QIcon(":/qt/qml/xPasteQT/assets/xpaste-logo.ico"));
     m_trayIcon->setToolTip("xPaste");
     m_trayIcon->show();
 
@@ -105,7 +105,7 @@ void TrayIcon::initWinToast()
         Utils::errorExit("[Registry]: Error saving toast DisplayName Regitry value");
     }
 
-    QString defaultIcon = QCoreApplication::applicationDirPath() + "/assets/xpaste_logo.ico";
+    QString defaultIcon = QCoreApplication::applicationDirPath() + "/assets/xpaste-logo.ico";
     defaultIcon.replace("/", "\\");
     if (!Registry::writeStringInRegistry(
             HKEY_CURRENT_USER,

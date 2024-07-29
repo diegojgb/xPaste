@@ -9,7 +9,7 @@ ColumnLayout {
         spacing: 10
 
         Image {
-            source: 'assets/xpaste_logo.png'
+            source: 'assets/xpaste-logo.png'
             anchors.verticalCenter: parent.verticalCenter
         }
 

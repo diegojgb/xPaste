@@ -1,12 +1,3 @@
-# Bugs:
-# - Can't set policy QTP0001 to NEW because it throws an error.
-
-# Optional:
-# - Add "System" option to theme.
-# - Change app name to xPasteQt or maybe even xPaste.
-# - Remake the up/down indicators of the SpinBox to be able to transition their color when changing themes.
-
-
 cmake_minimum_required(VERSION 3.24)
 
 project(xPasteQT LANGUAGES CXX)
@@ -36,6 +27,8 @@ add_subdirectory(WinToast)
 
 qt_add_executable(appxPasteQT
     main.cpp
+    assets/xpaste.rc  # icon resource.
+    assets/version.rc
 )
 
 qt_policy(SET QTP0001 NEW)
@@ -86,10 +79,10 @@ qt_add_qml_module(appxPasteQT
         assets/dark/box-disabled.png
         assets/dark/check-disabled.png
 
-        assets/off_switch.png
-        assets/on_switch.png
-        assets/xpaste_logo.png
-        assets/xpaste_logo.ico
+        assets/off-switch.png
+        assets/on-switch.png
+        assets/xpaste-logo.png
+        assets/xpaste-logo.ico
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

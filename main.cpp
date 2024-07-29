@@ -28,7 +28,6 @@ int main(int argc, char *argv[])
     qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
     SingleApplication app(argc, argv);
     QQuickStyle::setStyle("Fusion");
-    // app.setWindowIcon(QIcon(":/xPasteQT/assets/xpaste_logo.ico"));
 
     QStyleHints *styleHints = QGuiApplication::styleHints();
     Qt::ColorScheme colorScheme = styleHints->colorScheme();
