@@ -105,7 +105,7 @@ void TrayIcon::initWinToast()
         Utils::errorExit("[Registry]: Error saving toast DisplayName Regitry value");
     }
 
-    QString defaultIcon = QCoreApplication::applicationDirPath() + "/assets/xpaste-logo.ico";
+    QString defaultIcon = QCoreApplication::applicationDirPath() + "/assets/xpaste-logo.png";
     defaultIcon.replace("/", "\\");
     if (!Registry::writeStringInRegistry(
             HKEY_CURRENT_USER,

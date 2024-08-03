@@ -22,7 +22,7 @@ public:
     Settings *settings();
     bool isWindows10() const;
 
-    void initTrayIcon(QObject *parent, QQuickWindow *root);
+    void initTrayIcon(QObject *parent, QQuickWindow *rootWindow);
     void setMainWindow(QQuickWindow *window);
     bool getPasteHotkeyEditing();
     bool getToggleHotkeyEditing();
