@@ -85,7 +85,7 @@ void TrayIcon::initWinToast()
     if (!WinToast::isCompatible())
         Utils::errorExit("[WinToast]: Error, your system in not supported!");
 
-    WinToast::instance()->setAppName(L"WatchLog");
+    WinToast::instance()->setAppName(L"xPaste");
     const auto aumi = WinToast::configureAUMI(L"diegojgb", L"xPaste", L"ToastNotifications");
     WinToast::instance()->setAppUserModelId(aumi);
     WinToast::instance()->setShortcutPolicy(WinToast::ShortcutPolicy::SHORTCUT_POLICY_IGNORE);
